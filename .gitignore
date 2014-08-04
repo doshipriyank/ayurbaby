@@ -1,0 +1,28 @@
+#west app specific git ignore
+*target*
+*builds*
+*.jar
+*.war
+*.ear
+*.class
+environment.sh
+mail.properties
+database.properties
+log4j.properties
+
+# eclipse specific git ignore
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.springBeans

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- import datasource configuration -->
+	<import resource="classpath:datasource-context.xml" />
+
+	<bean id="pregnancyFood" class="com.lognsys.babycare.core.food.PregnancyFoodImpl">
+		<constructor-arg ref="jpaPregnancyFoodRepository"></constructor-arg>
+	</bean>
+
+	<bean id="pregnancy" class="com.lognsys.babycare.core.PregnancyImpl">
+		<constructor-arg name="stageRepository" ref="jpaStageRepository" />
+		<constructor-arg name="funFactsRepository" ref="jpaFunfactsRepository" />
+	</bean>
+
+
+	<!-- Repositories Configurations-->
+	<bean id="jpaFunfactsRepository"
+		class="com.lognsys.babycare.core.funfacts.JpaFunfactsRepository">
+		<property name="properties" ref="sqlProperties"></property>
+	</bean>
+
+	<bean id="jpaUserRepository" class="com.lognsys.babycare.core.user.JpaUserRepository">
+		<property name="properties" ref="sqlProperties"></property>
+	</bean>
+
+	<bean id="jpaStageRepository" class="com.lognsys.babycare.core.stage.JpaStageRepository">
+		<property name="properties" ref="sqlProperties"></property>
+	</bean>
+
+	<bean id="jpaPregnancyFoodRepository"
+		class="com.lognsys.babycare.core.food.JpaPregnancyFoodRepository">
+		<property name="properties" ref="sqlProperties"></property>
+	</bean>
+
+	<!-- Instructs the container to look for beans with @Transactional and decorate 
+		them -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- Enables annotation-config, needed for @PersistenceContext and @Autowired annotations -->
+	<context:annotation-config />
+
+
+</beans>
