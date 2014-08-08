@@ -2,11 +2,7 @@ package com.lognsys.babycare.core.stage;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.lognsys.babycare.core.food.Ayurvedic;
 import com.lognsys.babycare.core.food.Nutritional;
 import com.lognsys.babycare.core.user.User;
@@ -45,9 +40,9 @@ public class Stage implements Serializable
 	@Column(name = "last_edit")
 	private Date last_edit;
 
-//	@OneToMany(fetch=FetchType.EAGER)
-//	@JoinColumn(name = "stage_id")
-//	private Set<User> users = new HashSet<User>();
+	@OneToMany(fetch=FetchType.EAGER)
+	@JoinColumn(name = "stage_id")
+	private Collection<User> users;
 
 	@JoinTable(name = "ayurbaby_stage_ayurved", joinColumns = { @JoinColumn(name = "stage_id") }, inverseJoinColumns = { @JoinColumn(name = "ayurved_id") })
 	@ManyToMany
@@ -96,16 +91,17 @@ public class Stage implements Serializable
 	{
 		this.last_edit = last_edit;
 	}
-//
-//	public Set<User> getUsers()
-//	{
-//		return Collections.unmodifiableSet(users);
-//	}
-//
-//	public void setUsers(Set<User> users)
-//	{
-//		this.users = users;
-//	}
+
+	public Collection<User> getUsers()
+	{
+		return users;
+		
+	}
+
+	public void setUsers(Collection<User> users)
+	{
+		this.users = users;
+	}
 
 	@Override
 	public String toString()

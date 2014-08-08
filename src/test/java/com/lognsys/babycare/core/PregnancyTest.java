@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
+import com.lognsys.babycare.core.funfacts.Compound;
 import com.lognsys.babycare.core.food.Nutritional;
 import com.lognsys.babycare.core.food.Ayurvedic;
 
@@ -78,49 +78,52 @@ public class PregnancyTest
 		assertEquals(9, stage3);
 
 	}
-//
-//	@Test
-//	public void testGetNutrientFacts()
-//	{
-//		Compound listOfFats = pregnancy.getNutrientsFacts("fats");
-//		Assert.assertNotNull(listOfFats);
-//
-//		List<Compound> listOfFolic = pregnancy.getNutrientsFacts("folic acid");
-//		Assert.assertNotNull(listOfFolic);
-//
-//		List<Compound> listOfZinc = pregnancy.getNutrientsFacts("zinc");
-//		Assert.assertNotNull(listOfZinc);
-//
-//		List<Compound> listOfCarb = pregnancy.getNutrientsFacts("carbohydrates");
-//		Assert.assertNotNull(listOfCarb);
-//
-//		List<Compound> listOfCalcium = pregnancy.getNutrientsFacts("calcium");
-//		Assert.assertNotNull(listOfCalcium);
-//
-//		List<Compound> listOfProt = pregnancy.getNutrientsFacts("proteins");
-//		Assert.assertNotNull(listOfProt);
-//
-//		List<Compound> listOfVitC = pregnancy.getNutrientsFacts("vitamin c");
-//		Assert.assertNotNull(listOfVitC);
-//
-//		List<Compound> listOfVitD = pregnancy.getNutrientsFacts("vitamin d");
-//		Assert.assertNotNull(listOfVitD);
-//
-//		List<Compound> listOfVitB6 = pregnancy.getNutrientsFacts("vitamin b6");
-//		Assert.assertNotNull(listOfVitB6);
-//
-//		List<Compound> listOfMang = pregnancy.getNutrientsFacts("managnese");
-//		Assert.assertNotNull(listOfMang);
-//
-//		List<Compound> listOfIron = pregnancy.getNutrientsFacts("iron");
-//		Assert.assertNotNull(listOfIron);
-//
-//		List<Compound> listOfMag = pregnancy.getNutrientsFacts("magnesium");
-//		Assert.assertNotNull(listOfMag);
-//
-//		List<Compound> emptList = pregnancy.getNutrientsFacts("anonymous");
-//		Assert.assertEquals(new ArrayList<Compound>(), emptList);
-//	}
+
+	@Test
+	public void testGetNutrientFacts()
+	{
+		Compound Fats = pregnancy.getNutrientsFacts("fats");
+		Assert.assertNotNull(Fats);
+
+		Compound Folic = pregnancy.getNutrientsFacts("folic acid");
+		Assert.assertNotNull(Folic);
+
+		Compound Zinc = pregnancy.getNutrientsFacts("zinc");
+		Assert.assertNotNull(Zinc);
+
+		Compound Carb = pregnancy.getNutrientsFacts("carbohydrates");
+		Assert.assertNotNull(Carb);
+
+		Compound Calcium = pregnancy.getNutrientsFacts("calcium");
+		Assert.assertNotNull(Calcium);
+
+		Compound Prot = pregnancy.getNutrientsFacts("proteins");
+		Assert.assertNotNull(Prot);
+
+		Compound VitC = pregnancy.getNutrientsFacts("vitamin c");
+		Assert.assertNotNull(VitC);
+
+		Compound VitD = pregnancy.getNutrientsFacts("vitamin d");
+		Assert.assertNotNull(VitD);
+
+		Compound VitB6 = pregnancy.getNutrientsFacts("vitamin b6");
+		Assert.assertNotNull(VitB6);
+
+		Compound Mang = pregnancy.getNutrientsFacts("managnese");
+		Assert.assertNotNull(Mang);
+
+		Compound Iron = pregnancy.getNutrientsFacts("iron");
+		Assert.assertNotNull(Iron);
+
+		Compound Mag = pregnancy.getNutrientsFacts("magnesium");
+		Assert.assertNotNull(Mag);
+
+		Compound empty = pregnancy.getNutrientsFacts("anonymous");
+		Assert.assertNull(empty);
+		
+		Compound emptList = pregnancy.getNutrientsFacts(" ");
+		Assert.assertNull(emptList);
+	}
 	
 	@Test
 	public void testCalculateDueDate()
