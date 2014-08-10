@@ -68,7 +68,7 @@ public class IngestXLSData implements Ingest
 	private static Parser parser = new Parser();
 
 	private static String[] organicCompounds = { "zinc", "fats", "carbohydrates", "proteins", "vitamin c", "vitamin d",
-			"vitamin b6", "managnese", "iron", "magnesium", "folic acid", "calcium" };
+			"vitamin b6", "manganese", "iron", "magnesium", "folic acid", "calcium" };
 
 	public static String[] getOrganicCompunds()
 	{
@@ -370,7 +370,7 @@ public class IngestXLSData implements Ingest
 
 				if (sheet == null)
 				{
-					
+
 					throw new IllegalArgumentException("ERROR :  argument not found... Please see the usage");
 
 				}
@@ -416,11 +416,23 @@ public class IngestXLSData implements Ingest
 		System.out.println("Ayurbaby Ingest program started - " + date.toString());
 		long startMilli = System.currentTimeMillis();
 
-		// checks args.length > 1
-		if (args.length > 1)
+		// checks args.length = 1
+		if (args.length != 1)
 		{
 			usage();
 			System.exit(EXIT_ERROR);
+		}
+
+		// Set argument
+		for (EXCELSHEETS sheet : EXCELSHEETS.values())
+		{
+			if (!sheet.name().equals(args[0]))
+			{
+				System.err.println("Excel sheet not found !");
+				usage();
+				
+				System.exit(EXIT_ERROR);
+			}
 		}
 
 		// Spring Application context loads
@@ -428,9 +440,7 @@ public class IngestXLSData implements Ingest
 				"classpath:com/lognsys/babycare/loader/loader-context.xml");
 		IngestXLSData ingest = ctx.getBean("xlsResource", IngestXLSData.class);
 
-		// Set argument
-		if (args[0] != null)
-			IngestXLSData.ARG = args[0];
+		IngestXLSData.ARG = args[0];
 
 		// Run ingest using run program
 		ingest.run();

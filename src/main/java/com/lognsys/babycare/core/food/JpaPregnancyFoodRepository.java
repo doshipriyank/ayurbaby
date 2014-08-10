@@ -38,8 +38,6 @@ public class JpaPregnancyFoodRepository implements PregnancyFoodRepository
 	@Override
 	public List<Nutritional> findNutritionalFoodByStage(int stage)
 	{
-		System.out.println(properties.getProperty("SELECT_NUTRITIONAL_BYSTAGE"));
-
 		return (List<Nutritional>) entityManager.createQuery(properties.getProperty("SELECT_NUTRITIONAL_BYSTAGE"))
 				.setParameter("stage", stage).getResultList();
 	}

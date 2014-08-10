@@ -139,7 +139,7 @@ public class Parser
 
 	/**
 	 * Assumptions: Code will only check for first column in the row funfacts sheet has only one column. Code checks for
-	 * blank row after every Question and Answer TODO : Change algorithm to overcome assumptions.
+	 * blank row after every Question and Answer TODO : Change algorithm to get organic compound from excel sheet
 	 * 
 	 * @param funFactsSheet
 	 */
