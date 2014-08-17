@@ -15,7 +15,10 @@
 		<property name="url" value="${MYSQL_DB_URL}" />
 		<property name="username" value="${MYSQL_DB_USERNAME}" />
 		<property name="password" value="${MYSQL_DB_PASSWORD}" />
-		<property name="initialSize" value="3" />
+		<property name="removeAbandoned" value="true"/>
+		 <property name="initialSize" value="10" />
+        <property name="maxActive" value="5" />
+        <property name="maxWait" value="5000" />
 	</bean>
 
 	<bean id="transactionManager"
