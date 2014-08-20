@@ -13,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.springframework.data.neo4j.annotation.Fetch;
 
 import com.lognsys.babycare.core.stage.Stage;
 
