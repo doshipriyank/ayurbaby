@@ -73,9 +73,10 @@ public class Parser
 			}
 
 			if (nutVo != null)
+			{
 				listOfNutritionalVo.add(nutVo);
-
-			noOfParsedNutFoodRow++;
+				noOfParsedNutFoodRow++;
+			}
 		}
 
 		return listOfNutritionalVo;
@@ -129,9 +130,10 @@ public class Parser
 			}
 
 			if (ayurVo != null)
+			{
 				listOfAyurvedicVo.add(ayurVo);
-
-			noOfParsedAyurvedFoodRow++;
+				noOfParsedAyurvedFoodRow++;
+			}
 		}
 
 		return listOfAyurvedicVo;
@@ -200,9 +202,10 @@ public class Parser
 			{
 				funFacts.setAnswer(sb.toString());
 				listOfFunFacts.add(funFacts);
+				noOfParsedFunfactsRow++;
 			}
 
-			noOfParsedFunfactsRow++;
+			
 		}
 
 		return listOfFunFacts;

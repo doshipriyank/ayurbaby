@@ -19,7 +19,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
@@ -51,6 +51,7 @@ public class IngestXLSData implements Ingest
 
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
+	// static fields
 	private static String ARG = "";
 
 	private static final int EXIT_ERROR = 1;
@@ -88,6 +89,7 @@ public class IngestXLSData implements Ingest
 		this.resource = resource;
 	}
 
+	// print usage
 	public static void usage()
 	{
 		System.out.println("Usage : java IngestXLSdata (nutritional | funfacts | ayurvedic)");
@@ -173,6 +175,7 @@ public class IngestXLSData implements Ingest
 	public void loadNutritionalFood(List<?> listOfData)
 	{
 
+		int totalRowCount = 0;
 		for (Object obj : listOfData)
 		{
 			try
@@ -181,8 +184,10 @@ public class IngestXLSData implements Ingest
 				// ingest ayurbaby_nutritionalfood
 				BeanPropertySqlParameterSource nutVoBeanParam = new BeanPropertySqlParameterSource(nutVo);
 				KeyHolder nutVoKeyHolder = new GeneratedKeyHolder();
-				jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_NUTRITIONALFOOD"), nutVoBeanParam,
+				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_NUTRITIONALFOOD"), nutVoBeanParam,
 						nutVoKeyHolder);
+				
+				totalRowCount = totalRowCount + row;
 
 				// ingest ayurbaby_stages_nutritionalfood
 				int[] monthArr = Util.normalizeMonths(nutVo.getMonth(), ",");
@@ -202,6 +207,8 @@ public class IngestXLSData implements Ingest
 				dae.printStackTrace();
 			}
 
+			funFactsRowCount = totalRowCount;
+			
 		}
 
 	}
@@ -214,6 +221,7 @@ public class IngestXLSData implements Ingest
 	 */
 	public void loadAyurved(List<?> listOfData)
 	{
+		int rowCount = 0;
 		for (Object obj : listOfData)
 		{
 			try
@@ -222,7 +230,10 @@ public class IngestXLSData implements Ingest
 				// ingest ayurbaby_nutritionalfood
 				BeanPropertySqlParameterSource ayurVoBeanParam = new BeanPropertySqlParameterSource(ayurVo);
 				KeyHolder ayurVoKeyHolder = new GeneratedKeyHolder();
-				jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_AYURVED"), ayurVoBeanParam, ayurVoKeyHolder);
+				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_AYURVED"), ayurVoBeanParam,
+						ayurVoKeyHolder);
+				
+				 rowCount = rowCount + row;
 
 				// ingest ayurbaby_stages_nutritionalfood
 				int[] monthArr = Util.normalizeMonths(ayurVo.getMonth(), ",");
@@ -236,13 +247,16 @@ public class IngestXLSData implements Ingest
 
 				}
 
+				
 			}
 			catch (DataAccessException dae)
 			{
 				dae.printStackTrace();
 			}
+
 		}
 
+		nutrtionalFoodRowCount = rowCount;
 	}
 
 	/**
@@ -341,29 +355,16 @@ public class IngestXLSData implements Ingest
 		{
 			// Get the workbook instance for XLS file
 			Workbook workBook = WorkbookFactory.create(fis);
-			int noOfSheets = workBook.getNumberOfSheets();
 
-			if (noOfSheets != 3)
-				throw new IllegalArgumentException("ERROR: AyurBaby ExcelSheet does not meet requirements.");
+			/*
+			 * int noOfSheets = workBook.getNumberOfSheets(); if (noOfSheets != 3) throw new
+			 * IllegalArgumentException("ERROR: AyurBaby ExcelSheet does not meet requirements."); // if no argument
+			 * then load all the sheets if (IngestXLSData.ARG.isEmpty()) { for (int i = 0; i < noOfSheets; i++) { // Get
+			 * sheets from the workbook Sheet sheet = workBook.getSheetAt(i); // Set sheet setSheet(sheet); // call
+			 * parsedata after setting sheet for parsing parseData(); } }
+			 */
 
-			// if no argument then load all the sheets
-			if (IngestXLSData.ARG.isEmpty())
-			{
-
-				for (int i = 0; i < noOfSheets; i++)
-				{
-					// Get sheets from the workbook
-					Sheet sheet = workBook.getSheetAt(i);
-
-					// Set sheet
-					setSheet(sheet);
-
-					// call parsedata after setting sheet for parsing
-					parseData();
-
-				}
-			}
-
+			// if argument then load all the sheets
 			if (!IngestXLSData.ARG.isEmpty())
 			{
 				Sheet sheet = workBook.getSheet(IngestXLSData.ARG);
@@ -420,27 +421,37 @@ public class IngestXLSData implements Ingest
 		if (args.length != 1)
 		{
 			usage();
+			System.err.println("Argument required...");
 			System.exit(EXIT_ERROR);
 		}
 
-		// Set argument
+		IngestXLSData.ARG = args[0];
+
+		// validate argument with excelsheet name using enum
+		boolean isArgValid = false;
 		for (EXCELSHEETS sheet : EXCELSHEETS.values())
 		{
-			if (!sheet.name().equals(args[0]))
+			if (sheet.name().equals(IngestXLSData.ARG))
 			{
-				System.err.println("Excel sheet not found !");
-				usage();
-				
-				System.exit(EXIT_ERROR);
+				isArgValid = true;
 			}
 		}
 
-		// Spring Application context loads
-		ApplicationContext ctx = new ClassPathXmlApplicationContext(
-				"classpath:com/lognsys/babycare/loader/loader-context.xml");
-		IngestXLSData ingest = ctx.getBean("xlsResource", IngestXLSData.class);
+		if (!isArgValid)
+		{
+			usage();
+			System.err.println("Invalid Excel file....sheet not found");
+			System.exit(EXIT_ERROR);
+		}
 
-		IngestXLSData.ARG = args[0];
+		// Spring Application context loads
+		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:loader-context.xml");
+		//
+		ctx.getEnvironment().setActiveProfiles("dev");
+
+		ctx.refresh();
+
+		IngestXLSData ingest = ctx.getBean("xlsResource", IngestXLSData.class);
 
 		// Run ingest using run program
 		ingest.run();
@@ -450,6 +461,7 @@ public class IngestXLSData implements Ingest
 		// Get elapsed time in seconds
 		float elapsedTimeSec = elapsedTimeMillis / 1000F;
 
+		ctx.close();
 		System.out.println();
 		System.out.println("AyurBaby Ingest program ended " + date.toString() + " Elapsed time = " + elapsedTimeSec
 				+ " seconds.");
