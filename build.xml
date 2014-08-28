@@ -26,12 +26,6 @@
 		<fileset dir="${dir.lib}">
 			<include name="**/*.jar" />
 		</fileset>
-		<!--	<fileset dir="${dir.resources}">
-			<include name="**/*.*" />
-		</fileset>
-		<fileset dir="${dir.data}">
-			<include name="**/*.*" />
-		</fileset>-->
 	</path>
 
 	<target name="compile">
@@ -41,52 +35,50 @@
 			<include name="com/lognsys/babycare/loader/**" />
 			<include name="com/lognsys/babycare/util/**" />
 			<include name="com/lognsys/babycare/vo/**" />
-			<include name="com/lognsys/babycare/vo/**" />
 			<classpath refid="libraries.classpath" />
 		</javac>
-		<unjar dest="${dir.build}">
-			<fileset dir="${dir.lib}" includes="*.jar" />
-		</unjar>
+	
 		<copy todir="${dir.build}">
-			<fileset dir="${dir.resources}" includes="**/*.*" />
+			<fileset dir="${dir.resources}">
+				<exclude name="*META-INF/*"/>
+				<include name="**/*.properties"/>
+				<include name="*-context.xml"/>
+				<include name="*files/*"/>
+			</fileset>
 		</copy>
 	</target>
 
 	<target name="jar" depends="compile" description="Generate jar file with manifest">
-		<mkdir dir="${dir.jar}" />
-		<mkdir dir="${dir.build}/${dir.lib}" />
-		<copy todir="${dir.build}/${dir.lib}" flatten="true">
-			<path refid="libraries.classpath" />
-		</copy>
-
-		<manifestclasspath property="manifest.classpath" jarfile="${jar.file}">
-			<classpath refid="libraries.classpath" />
-		</manifestclasspath>
+		
+		<pathconvert property="manifest.classpath" pathsep=" ">
+		  <path refid="libraries.classpath"/>
+		  <mapper>
+		    <chainedmapper>
+		       <flattenmapper/>
+		       <globmapper from="*.jar" to="lib/*.jar"/>
+		    </chainedmapper>
+		  </mapper>
+		</pathconvert>
 
 		<tstamp>
 			<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
 		</tstamp>
-		<!--<jar destfile="${dir.deploy}/${app.jar}" basedir="${dir.build}" includes="**/*.*">
+		<jar destfile="${ant.project.name}.jar" basedir="${dir.build}">
+
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Implementation-Version" value="${version.num}" />
 				<attribute name="Implementation-Vendor" value="Lognsys" />
 				<attribute name="Built-Date" value="${TODAY}" />
-			</manifest>
-		</jar>-->
-
-		<jar destfile="${dir.jar}/${ant.project.name}.jar" basedir="${dir.build}">
-
-			<manifest>
 				<attribute name="Main-Class" value="${main-class}" />
-				<attribute name="Class-Path" value="${dir.jar}/${lib.dir}/*.*" />
+				<attribute name="Class-Path" value="${manifest.classpath}" />
 			</manifest>
 		</jar>
 	</target>
 
 	<target name="clean">
 		<delete dir="${dir.build}" />
-		<delete file="${dir.jar}/${ant.project.name}.jar" />
+		<delete file="${ant.project.name}.jar" />
 	</target>
 </project>
 

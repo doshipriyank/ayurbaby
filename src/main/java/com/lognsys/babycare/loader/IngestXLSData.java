@@ -7,8 +7,8 @@
 
 package com.lognsys.babycare.loader;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,24 +107,26 @@ public class IngestXLSData implements Ingest
 		Sheet sheet = getSheet();
 
 		String sheetname = sheet.getSheetName();
+		
+		System.out.println("");
 
 		switch (EXCELSHEETS.valueOf(sheetname))
 		{
 
 			case nutritional:
-				System.out.println("Accessing Nutrtional Sheet.....");
+				System.out.println("Parsing Nutrtional Sheet.....");
 				List<NutritionalVO> listOfNutritionalVO = parser.parseNutritionalData(sheet);
 				loadData(listOfNutritionalVO, EXCELSHEETS.nutritional);
 				break;
 
 			case funfacts:
-				System.out.println("Accessing funfacts Sheet");
+				System.out.println("Parsing funfacts Sheet......");
 				List<FunfactsVO> listOfFunFactsVO = parser.parseFunFacts(sheet);
 				loadData(listOfFunFactsVO, EXCELSHEETS.funfacts);
 				break;
 
 			case ayurvedic:
-				System.out.println("Accessing Ayurvedic Sheet");
+				System.out.println("Parsing Ayurvedic Sheet......");
 				List<AyurvedicVO> listOfAyurvedicVO = parser.parseAyurvedData(sheet);
 				loadData(listOfAyurvedicVO, EXCELSHEETS.ayurvedic);
 				break;
@@ -207,7 +209,7 @@ public class IngestXLSData implements Ingest
 				dae.printStackTrace();
 			}
 
-			funFactsRowCount = totalRowCount;
+			nutrtionalFoodRowCount = totalRowCount;
 			
 		}
 
@@ -256,7 +258,7 @@ public class IngestXLSData implements Ingest
 
 		}
 
-		nutrtionalFoodRowCount = rowCount;
+		ayurvedicRowCount = rowCount;
 	}
 
 	/**
@@ -319,19 +321,19 @@ public class IngestXLSData implements Ingest
 	public void printReport()
 	{
 
-		System.out.println("Print Report");
-		System.out.println("\nParsed Sheet Summary");
+		System.out.println("\nParsed Summary:");
 		List<String> parsed = Parser.getStats();
 		for (String stats : parsed)
 		{
 			System.out.println(stats);
 		}
 
-		System.out.println("\n\nDatabase Summary: \n\n");
+		System.out.println("\n\nDatabase Summary:");
 		System.out.println("Nutritional Table rows loaded - " + nutrtionalFoodRowCount);
 		System.out.println("Ayurvedic Table rows loaded - " + ayurvedicRowCount);
 		System.out.println("Funfacts Table rows loaded - " + funFactsRowCount);
 		System.out.println("Organic Compound Table rows loaded - " + organiCompoundRowCount);
+		System.out.println();
 
 	}
 
@@ -346,15 +348,15 @@ public class IngestXLSData implements Ingest
 		if (!resource.exists())
 		{
 			log.error("File not found - " + resource.getDescription());
-			throw new IllegalArgumentException("ERROR: File not found !");
+			throw new IllegalArgumentException("ERROR: File not found - "+resource.getDescription());
 
 		}
 
 		// java 7 try-with-resource will close the inputstream after exiting the block-scope
-		try (FileInputStream fis = new FileInputStream(resource.getFile()))
+		try (InputStream is = resource.getInputStream())
 		{
 			// Get the workbook instance for XLS file
-			Workbook workBook = WorkbookFactory.create(fis);
+			Workbook workBook = WorkbookFactory.create(is);
 
 			/*
 			 * int noOfSheets = workBook.getNumberOfSheets(); if (noOfSheets != 3) throw new
@@ -444,12 +446,14 @@ public class IngestXLSData implements Ingest
 			System.exit(EXIT_ERROR);
 		}
 
+		System.setProperty("spring.profiles.active", "dev");
+		
 		// Spring Application context loads
-		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:loader-context.xml");
+		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(new String[] {"classpath:loader-context.xml"});
 		//
-		ctx.getEnvironment().setActiveProfiles("dev");
+		//ctx.getEnvironment().setActiveProfiles("dev");
 
-		ctx.refresh();
+		//ctx.refresh();
 
 		IngestXLSData ingest = ctx.getBean("xlsResource", IngestXLSData.class);
 
