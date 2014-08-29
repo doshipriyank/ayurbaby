@@ -3,6 +3,7 @@ package com.lognsys.babycare.core.stage;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import com.lognsys.babycare.core.food.Ayurvedic;
 import com.lognsys.babycare.core.food.Nutritional;
 import com.lognsys.babycare.core.user.User;
@@ -46,10 +51,12 @@ public class Stage implements Serializable
 
 	@JoinTable(name = "ayurbaby_stage_ayurved", joinColumns = { @JoinColumn(name = "stage_id") }, inverseJoinColumns = { @JoinColumn(name = "ayurved_id") })
 	@ManyToMany
+	@JsonManagedReference
 	private Collection<Ayurvedic> ayurvedic;
 
 	@JoinTable(name = "ayurbaby_stage_nutritionalfood", joinColumns = { @JoinColumn(name = "stage_id") }, inverseJoinColumns = { @JoinColumn(name = "nutritionalfood_id") })
 	@ManyToMany
+	@JsonManagedReference
 	private Collection<Nutritional> nutritional;
 
 	public int getId()
