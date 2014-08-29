@@ -20,8 +20,9 @@ public interface Pregnancy
 	 * 
 	 * @param lmpDate
 	 * @return String representation of date
+	 * @throws PregnancyException 
 	 */
-	public String calculateDueDate(String lmpDate);
+	public String calculateDueDate(String lmpDate) throws PregnancyException;
 
 	/**
 	 * @param compound
@@ -34,7 +35,8 @@ public interface Pregnancy
 	 * 
 	 * @param lmpDate
 	 * @return returns stage as int 
+	 * @throws PregnancyException 
 	 */
-	public int getPregnancyStage(String lmpDate);
+	public int getPregnancyStage(String lmpDate) throws PregnancyException;
 
 }

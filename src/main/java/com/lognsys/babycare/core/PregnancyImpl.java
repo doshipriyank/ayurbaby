@@ -39,18 +39,12 @@ public class PregnancyImpl implements Pregnancy
 	}
 
 	@Override
-	public String calculateDueDate(String lmpDate)
+	public String calculateDueDate(String lmpDate) throws PregnancyException
 	{
 		String pregnancyDate = null;
-		try
-		{
-			pregnancyDate = PregnancyUtil.calculateDueDate(lmpDate);
-		}
-		catch (PregnancyException e)
-		{
-			e.printStackTrace();
 
-		}
+		pregnancyDate = PregnancyUtil.calculateDueDate(lmpDate);
+
 		return pregnancyDate;
 	}
 
@@ -62,7 +56,7 @@ public class PregnancyImpl implements Pregnancy
 	}
 
 	@Override
-	public int getPregnancyStage(String lmpDate)
+	public int getPregnancyStage(String lmpDate) throws PregnancyException
 	{
 		int totalPegnancyWeek = 0;
 
@@ -73,15 +67,7 @@ public class PregnancyImpl implements Pregnancy
 			weeks.add(stage.getWeek());
 		}
 
-		try
-		{
-
-			totalPegnancyWeek = PregnancyUtil.normalizePregnancyStage(weeks, lmpDate);
-		}
-		catch (PregnancyException e)
-		{
-			e.printStackTrace();
-		}
+		totalPegnancyWeek = PregnancyUtil.normalizePregnancyStage(weeks, lmpDate);
 
 		return totalPegnancyWeek;
 	}

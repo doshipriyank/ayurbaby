@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.IllegalFieldValueException;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.lognsys.babycare.core.PregnancyException;
 
@@ -15,26 +18,24 @@ public class PregnancyUtilTest
 	
 	private static final String DATE_FORMAT_INPUT = "ddMMyyyy";
 	
+	  @Rule
+	  public ExpectedException exception = ExpectedException.none();
+	
 	@Test
 	public void testCalculateDueDate() throws PregnancyException
 	{
 		String pregnancyDueDate = PregnancyUtil.calculateDueDate("01012014");
 		Assert.assertEquals("8 Oct Wed 2014", pregnancyDueDate);
-
-		try
-		{
-			String dueDatePassed = PregnancyUtil.calculateDueDate("01012013");
-			Assert.assertEquals("8 Oct Wed 2014", dueDatePassed);
-		}
-		catch (PregnancyException ex)
-		{
-			ex.printStackTrace();
-			
-		}
-
-		Assert.assertNull(PregnancyUtil.calculateDueDate("12132014"));
+	
+		String dueDatePassed = PregnancyUtil.calculateDueDate("01012013");
+		Assert.assertEquals("8 Oct Tue 2013", dueDatePassed);
+	
+		exception.expect(IllegalFieldValueException.class);
+		PregnancyUtil.calculateDueDate("12132014");
 		
-		Assert.assertNull(PregnancyUtil.calculateDueDate(""));
+		exception.expect(IllegalFieldValueException.class);
+		PregnancyUtil.calculateDueDate("");
+		
 		
 	}
 	
@@ -52,11 +53,10 @@ public class PregnancyUtilTest
 		weeks.add("31-35");
 		weeks.add("36-40");
 		
-		
 		Assert.assertEquals(1,PregnancyUtil.normalizePregnancyStage(weeks, new DateTime().toString(DATE_FORMAT_INPUT)));
-		Assert.assertEquals(5,PregnancyUtil.normalizePregnancyStage(weeks, new DateTime().minusWeeks(22).toString(DATE_FORMAT_INPUT)));
+		Assert.assertEquals(6,PregnancyUtil.normalizePregnancyStage(weeks, new DateTime().minusWeeks(22).toString(DATE_FORMAT_INPUT)));
 		Assert.assertEquals(3,PregnancyUtil.normalizePregnancyStage(weeks, new DateTime().minusWeeks(10).toString(DATE_FORMAT_INPUT)));
-		
+	
 
 	}
 
