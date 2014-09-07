@@ -3,10 +3,9 @@ package com.lognsys.babycare.core.common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.IllegalFieldValueException;
+import org.joda.time.LocalDate;
 import org.joda.time.Weeks;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -20,19 +19,20 @@ public class PregnancyUtil
 
 	private static final String DATE_FORMAT_INPUT = "ddMMyyyy";
 
-	private static final int LMP_ADD_DAYS = 7;
-
-	private static final int MAX_PREG_MONTHS = 9;
+	// estimated due dates (EDD)
+	private static final int EDD_DAYS = 280;
 
 	private static final int MAX_FINAL_WEEK = 40;
 
-	private static DateTimeFormatter inputDtf = DateTimeFormat.forPattern(DATE_FORMAT_INPUT);
+	private static final DateTimeFormatter inputDtf = DateTimeFormat.forPattern(DATE_FORMAT_INPUT);
 
-	private static DateTimeFormatter oututDtf = DateTimeFormat.forPattern(DATE_FORMAT_OUTPUT);
+	private static final DateTimeFormatter oututDtf = DateTimeFormat.forPattern(DATE_FORMAT_OUTPUT);
+
+	private static final LocalDate currentDate = DateTime.now(DateTimeZone.UTC).toLocalDate();
 
 	/**
-	 * Due date is calculated in two steps: 1) Add LMP + 7 days = pregnancy start date. 2) Add pregnancy start date + 9
-	 * months to get approximate Due date
+	 * Naegael's Rule - calculate Due date 1. first day of your last period, count backward 3 months 2. add 7 days, and
+	 * add an entire year
 	 * 
 	 * @param lastMenCycleDate
 	 * @return returns date time (joda time api)
@@ -42,33 +42,20 @@ public class PregnancyUtil
 	{
 		DateTime originalDate = null;
 
-		try
-		{
-			originalDate = inputDtf.parseDateTime(lastMenCycleDate);
-		}
-		catch (IllegalFieldValueException dateEx)
-		{
-			dateEx.printStackTrace();
-			return null;
-		}
-		catch (IllegalArgumentException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
+		originalDate = inputDtf.parseDateTime(lastMenCycleDate);
 
-		DateTime dateAfterLmpDays = originalDate.plusDays(LMP_ADD_DAYS);
+		if (originalDate.toLocalDate().isAfter(currentDate))
+			throw new PregnancyException("Invalid Lmp Date > Today's date - " + originalDate);
 
-		DateTime dueDate = dateAfterLmpDays.plusMonths(MAX_PREG_MONTHS);
-
-		if (dueDate.isBefore(DateTime.now()))
-			throw new PregnancyException("Due Date crossed  - " + dueDate.toString(oututDtf));
+		DateTime dueDate = originalDate.plusDays(EDD_DAYS);
 
 		return dueDate.toString(oututDtf);
 
 	}
 
 	/**
+	 * Add LMP + 7 to start the pregnancy countdown
+	 * 
 	 * @param weeks list<String> of weeks
 	 * @param lmp (last menstrual cycle) Date in dd/MM/yyyy format
 	 * @return returns week
@@ -77,29 +64,34 @@ public class PregnancyUtil
 	public static int normalizePregnancyStage(List<String> weeks, String lmp) throws PregnancyException
 	{
 		int stage = 0;
-		DateTime lmpDate = inputDtf.parseDateTime(lmp).plusDays(LMP_ADD_DAYS);
 
-		int week = Weeks.weeksBetween(lmpDate, DateTime.now(DateTimeZone.UTC)).getWeeks();
-		
-		if(week == 0)
+		// param lmp converted to DateTime
+		DateTime lmpDate = inputDtf.parseDateTime(lmp);
+
+		// check lmpDate > currentDate
+		if (lmpDate.toLocalDate().isAfter(currentDate))
+			throw new PregnancyException("Invalid Lmp Date > Today's date - " + lmpDate);
+
+		int week = Weeks.weeksBetween(lmpDate.toLocalDate(), currentDate).getWeeks();
+
+		if (week == 0)
 			return 1;
 
 		if (week > MAX_FINAL_WEEK)
 			throw new PregnancyException("Due Date crossed. weeks passed - " + week);
-		
-		 stage =  getStageByWeek(weeks, week);
-		 
-		 if(stage == 0)
-			 return 1;
-		 
-		 return stage;
 
-		
+		stage = getStageByWeek(weeks, week);
+
+		if (stage == 0)
+			return 1;
+
+		return stage;
+
 	}
 
 	/**
-	 * list<String> weeks range eg. (1-4) from database is parsed and converted into Integer
-	 * find week in the week range and return pregnancy stage or month
+	 * list<String> weeks range eg. (1-4) from database is parsed and converted into Integer find week in the week range
+	 * and return pregnancy stage or month
 	 * 
 	 * @param weeks
 	 * @return returns best stage(pregnancy month) based on week
@@ -121,14 +113,14 @@ public class PregnancyUtil
 				weekRange.add(Integer.parseInt(weekTokenizer.nextElement().toString()));
 			}
 
-		//	System.out.println(weekRange);
 			if (week >= weekRange.get(0) && week <= weekRange.get(1))
 			{
 				return stage;
 			}
-				
+
 		}
 		return stage;
 
 	}
+
 }

@@ -14,6 +14,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import com.lognsys.babycare.core.stage.Stage;
 
 @Entity
@@ -47,6 +50,7 @@ public class Nutritional implements Serializable
 
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name = "ayurbaby_stage_nutritionalfood", joinColumns = { @JoinColumn(name = "nutritionalfood_id") }, inverseJoinColumns = { @JoinColumn(name = "stage_id") })
+	@JsonBackReference
 	private Collection<Stage> stages;
 
 	public int getId()

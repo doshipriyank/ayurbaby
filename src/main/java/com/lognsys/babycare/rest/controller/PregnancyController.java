@@ -41,14 +41,14 @@ public class PregnancyController
 
 	@RequestMapping(value = "/duedate/{lmpDate}", method = RequestMethod.GET)
 	public @ResponseBody
-	String pregnancyDueDate(@PathVariable("lmpDate") String lmpDate)
+	String pregnancyDueDate(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
 	{
 		return pregnancy.calculateDueDate(lmpDate);
 	}
 
 	@RequestMapping(value = "/stage/{lmpDate}", method = RequestMethod.GET)
 	public @ResponseBody
-	int pregnancyStage(@PathVariable("lmpDate") String lmpDate)
+	int pregnancyStage(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
 	{
 		return pregnancy.getPregnancyStage(lmpDate);
 	}
