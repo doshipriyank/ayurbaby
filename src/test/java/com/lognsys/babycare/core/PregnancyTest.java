@@ -16,7 +16,7 @@ import com.lognsys.babycare.core.food.Ayurvedic;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:system-test-config.xml" })
-@ActiveProfiles("dev")
+@ActiveProfiles(profiles= {"dev","prod"})
 public class PregnancyTest
 {
 	private static final String DATE_FORMAT_INPUT = "ddMMyyyy";
@@ -129,6 +129,6 @@ public class PregnancyTest
 	@Test
 	public void testCalculateDueDate() throws PregnancyException
 	{
-		assertNull(pregnancy.calculateDueDate("01012013"));
+		assertNull(pregnancy.calculateDueDate("01012015"));
 	}
 }
