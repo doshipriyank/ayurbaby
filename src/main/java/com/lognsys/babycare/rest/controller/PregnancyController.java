@@ -28,7 +28,7 @@ public class PregnancyController
 {
 
 	private final Logger LOG = Logger.getLogger(getClass());
-
+	
 	@Autowired
 	private Pregnancy pregnancy;
 
@@ -93,9 +93,10 @@ public class PregnancyController
 	
 	@ResponseStatus(org.springframework.http.HttpStatus.NOT_ACCEPTABLE)
 	@ExceptionHandler({ PregnancyException.class })
-	public void handleInvalidData(Exception ex)
+	public String handleInvalidData(Exception ex )
 	{ 
 		LOG.error("Exception is: ", ex);
-		// return empty 400
+		// return empty 406
+		return "";
 	}
 }

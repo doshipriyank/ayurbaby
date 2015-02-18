@@ -31,8 +31,10 @@ public class PregnancyUtil
 	private static final LocalDate currentDate = DateTime.now(DateTimeZone.UTC).toLocalDate();
 
 	/**
-	 * Naegael's Rule - calculate Due date 1. first day of your last period, count backward 3 months 2. add 7 days, and
-	 * add an entire year
+	 * Naegael's Rule - calculate Due date 
+	 * 1. first day of your last period, count backward 3 months 
+	 * 2. add 7 days, 
+	 * and add an entire year
 	 * 
 	 * @param lastMenCycleDate
 	 * @return returns date time (joda time api)
