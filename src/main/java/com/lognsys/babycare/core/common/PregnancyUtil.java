@@ -47,7 +47,7 @@ public class PregnancyUtil
 		originalDate = inputDtf.parseDateTime(lastMenCycleDate);
 
 		if (originalDate.toLocalDate().isAfter(currentDate))
-			throw new PregnancyException("Invalid Lmp Date > Today's date - " + originalDate);
+			throw new PregnancyException("Invalid Lmp Date"+originalDate +"> Today's date - "+currentDate);
 
 		DateTime dueDate = originalDate.plusDays(EDD_DAYS);
 
@@ -72,7 +72,7 @@ public class PregnancyUtil
 
 		// check lmpDate > currentDate
 		if (lmpDate.toLocalDate().isAfter(currentDate))
-			throw new PregnancyException("Invalid Lmp Date > Today's date - " + lmpDate);
+			throw new PregnancyException("Invalid Lmp Date"+lmpDate +"> Today's date - "+currentDate );
 
 		int week = Weeks.weeksBetween(lmpDate.toLocalDate(), currentDate).getWeeks();
 
