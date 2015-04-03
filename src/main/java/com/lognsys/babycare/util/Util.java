@@ -5,6 +5,12 @@ import java.util.StringTokenizer;
 public class Util
 {
 
+	/**
+	 * 
+	 * @param months
+	 * @param delim
+	 * @return
+	 */
 	public static int[] normalizeMonths(String months, String delim)
 	{
 

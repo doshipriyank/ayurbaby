@@ -1,8 +1,9 @@
-package com.lognsys.babycare.rest.controller;
+ package com.lognsys.babycare.rest.controller;
 
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.joda.time.IllegalFieldValueException;
@@ -72,9 +73,9 @@ public class PregnancyController
 	/**
 	 * Maps IllegalArgumentExceptions to a 404 Not Found HTTP status code.
 	 */
-	@ResponseStatus(org.springframework.http.HttpStatus.NOT_FOUND)
+	@ResponseStatus(value=org.springframework.http.HttpStatus.NOT_FOUND, reason="result not found")
 	@ExceptionHandler({ EmptyResultDataAccessException.class, NoResultException.class })
-	public void handleNotFound(Exception ex)
+	public void handleNotFound(Exception ex, HttpServletResponse response)
 	{
 		LOG.error("Exception is: ", ex);
 		// return empty 404
@@ -83,20 +84,20 @@ public class PregnancyController
 	/**
 	 * Maps IllegalArgumentExceptions to a 400 Bad Request HTTP status code.
 	 */
-	@ResponseStatus(org.springframework.http.HttpStatus.BAD_REQUEST)
+	@ResponseStatus(value=org.springframework.http.HttpStatus.BAD_REQUEST, reason="Bad data")
 	@ExceptionHandler({ IllegalArgumentException.class, IllegalFieldValueException.class })
-	public void handleBadData(Exception ex)
+	public void handleBadData(Exception ex, HttpServletResponse response)
 	{
-		LOG.error("Exception is: ", ex);
+		LOG.error("Bad data Exception is: ", ex);
 		// return empty 400
 	}
 	
-	@ResponseStatus(org.springframework.http.HttpStatus.NOT_ACCEPTABLE)
+	@ResponseStatus(value=org.springframework.http.HttpStatus.NOT_ACCEPTABLE, reason="Invalid input data")
 	@ExceptionHandler({ PregnancyException.class })
-	public String handleInvalidData(Exception ex )
+	public void handleInvalidData(PregnancyException pex, HttpServletResponse response )
 	{ 
-		LOG.error("Exception is: ", ex);
+		LOG.error("Invalid Data Exception is: ", pex);
 		// return empty 406
-		return "";
+	
 	}
 }

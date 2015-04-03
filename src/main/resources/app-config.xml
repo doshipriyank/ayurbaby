@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
@@ -20,7 +21,7 @@
 	</bean>
 
 
-	<!-- Repositories Configurations-->
+	<!-- Repositories Configurations -->
 	<bean id="jpaFunfactsRepository"
 		class="com.lognsys.babycare.core.funfacts.JpaFunfactsRepository">
 		<property name="properties" ref="sqlProperties"></property>
@@ -43,8 +44,12 @@
 		them -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!-- Enables annotation-config, needed for @PersistenceContext and @Autowired annotations -->
+	<!-- Enables annotation-config, needed for @PersistenceContext and @Autowired 
+		annotations -->
 	<context:annotation-config />
 
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver" />
+	
 
 </beans>
