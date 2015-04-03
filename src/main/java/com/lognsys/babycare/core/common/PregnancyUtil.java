@@ -22,13 +22,13 @@ public class PregnancyUtil
 	// estimated due dates (EDD)
 	private static final int EDD_DAYS = 280;
 
+	// max pregnanyc weeks
 	private static final int MAX_FINAL_WEEK = 40;
 
 	private static final DateTimeFormatter inputDtf = DateTimeFormat.forPattern(DATE_FORMAT_INPUT);
 
 	private static final DateTimeFormatter oututDtf = DateTimeFormat.forPattern(DATE_FORMAT_OUTPUT);
-
-	private static final LocalDate currentDate = DateTime.now(DateTimeZone.UTC).toLocalDate();
+	
 
 	/**
 	 * Naegael's Rule - calculate Due date 
@@ -46,8 +46,8 @@ public class PregnancyUtil
 
 		originalDate = inputDtf.parseDateTime(lastMenCycleDate);
 
-		if (originalDate.toLocalDate().isAfter(currentDate))
-			throw new PregnancyException("Invalid Lmp Date"+originalDate +"> Today's date - "+currentDate);
+		if (originalDate.toLocalDate().isAfter(getCurrentDate()))
+			throw new PregnancyException("Invalid Lmp Date - "+originalDate +"> Today's date - "+getCurrentDate());
 
 		DateTime dueDate = originalDate.plusDays(EDD_DAYS);
 
@@ -71,10 +71,10 @@ public class PregnancyUtil
 		DateTime lmpDate = inputDtf.parseDateTime(lmp);
 
 		// check lmpDate > currentDate
-		if (lmpDate.toLocalDate().isAfter(currentDate))
-			throw new PregnancyException("Invalid Lmp Date"+lmpDate +"> Today's date - "+currentDate );
+		if (lmpDate.toLocalDate().isAfter(getCurrentDate()))
+			throw new PregnancyException("Invalid Lmp Date - "+lmpDate +"> Today's date - "+getCurrentDate());
 
-		int week = Weeks.weeksBetween(lmpDate.toLocalDate(), currentDate).getWeeks();
+		int week = Weeks.weeksBetween(lmpDate.toLocalDate(), getCurrentDate()).getWeeks();
 
 		if (week == 0)
 			return 1;
@@ -123,6 +123,11 @@ public class PregnancyUtil
 		}
 		return stage;
 
+	}
+	
+	private static LocalDate getCurrentDate()
+	{
+		return DateTime.now(DateTimeZone.UTC).toLocalDate();
 	}
 
 }
