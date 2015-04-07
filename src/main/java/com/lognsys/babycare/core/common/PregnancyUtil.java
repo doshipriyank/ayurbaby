@@ -3,6 +3,7 @@ package com.lognsys.babycare.core.common;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
@@ -22,7 +23,7 @@ public class PregnancyUtil
 	// estimated due dates (EDD)
 	private static final int EDD_DAYS = 280;
 
-	// max pregnanyc weeks
+	// max pregnancy weeks
 	private static final int MAX_FINAL_WEEK = 40;
 
 	private static final DateTimeFormatter inputDtf = DateTimeFormat.forPattern(DATE_FORMAT_INPUT);
@@ -40,11 +41,14 @@ public class PregnancyUtil
 	 * @return returns date time (joda time api)
 	 * @throws PregnancyException
 	 */
-	public static String calculateDueDate(String lastMenCycleDate) throws PregnancyException
+	public static String calculateDueDate(String lastMenCycleDate) throws PregnancyException	
 	{
-		DateTime originalDate = null;
 
-		originalDate = inputDtf.parseDateTime(lastMenCycleDate);
+		if(lastMenCycleDate.length() != 8 || !(lastMenCycleDate.matches("[0-9]*")))
+			throw new IllegalArgumentException("Error : date parameter invalid!");
+		
+		
+		DateTime originalDate = inputDtf.parseDateTime(lastMenCycleDate);
 
 		if (originalDate.toLocalDate().isAfter(getCurrentDate()))
 			throw new PregnancyException("Invalid Lmp Date - "+originalDate +" > Today's date - "+getCurrentDate());
@@ -63,12 +67,15 @@ public class PregnancyUtil
 	 * @return returns week
 	 * @throws PregnancyException
 	 */
-	public static int normalizePregnancyStage(List<String> weeks, String lmp) throws PregnancyException
+	public static int normalizePregnancyStage(List<String> weeks, String lastMenCycleDate) throws PregnancyException
 	{
 		int stage = 0;
+		
+		if(lastMenCycleDate.length() != 8 || !(lastMenCycleDate.matches("[0-9]*")))
+			throw new IllegalArgumentException("Error : date parameter invalid - "+lastMenCycleDate);
 
 		// param lmp converted to DateTime
-		DateTime lmpDate = inputDtf.parseDateTime(lmp);
+		DateTime lmpDate = inputDtf.parseDateTime(lastMenCycleDate);
 
 		// check lmpDate > currentDate
 		if (lmpDate.toLocalDate().isAfter(getCurrentDate()))
@@ -125,6 +132,10 @@ public class PregnancyUtil
 
 	}
 	
+	/**
+	 * get current system local date
+	 * @return
+	 */
 	private static LocalDate getCurrentDate()
 	{
 		return DateTime.now(DateTimeZone.UTC).toLocalDate();
