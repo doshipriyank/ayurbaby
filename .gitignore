@@ -26,3 +26,5 @@ local.properties
 .settings/
 .loadpath
 .springBeans
+/bin/
+/build/

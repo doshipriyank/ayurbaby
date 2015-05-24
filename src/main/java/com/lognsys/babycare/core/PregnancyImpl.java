@@ -54,6 +54,12 @@ public class PregnancyImpl implements Pregnancy
 
 		return this.funFactsRepository.findfactsByCompound(nutrient);
 	}
+	
+	@Override
+	public List<Compound> getCompounds()
+	{
+		return this.funFactsRepository.getAllCompounds();
+	}
 
 	@Override
 	public int getPregnancyStage(String lmpDate) throws PregnancyException

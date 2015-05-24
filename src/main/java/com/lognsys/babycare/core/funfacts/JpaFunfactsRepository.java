@@ -2,9 +2,13 @@ package com.lognsys.babycare.core.funfacts;
 
 import java.util.List;
 import java.util.Properties;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Repository;
+
+import com.lognsys.babycare.core.funfacts.Compound;
 
 @Repository
 public class JpaFunfactsRepository implements FunfactsRepository
@@ -43,6 +47,17 @@ public class JpaFunfactsRepository implements FunfactsRepository
 	public List<Facts> getAllFacts()
 	{
 		return entityManager.createNativeQuery(properties.getProperty("SELECT_ALL_FUNFACTS"), Facts.class)
+				.getResultList();
+	}
+	
+	/**
+	 * Returns all the facts and answer from the database
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Compound> getAllCompounds()
+	{
+		return entityManager.createNativeQuery(properties.getProperty("SELECT_ALL_COMPOUND"), Compound.class)
 				.getResultList();
 	}
 

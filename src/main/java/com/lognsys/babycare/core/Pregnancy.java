@@ -1,6 +1,8 @@
 package com.lognsys.babycare.core;
 
 
+import java.util.List;
+
 import com.lognsys.babycare.core.food.PregnancyFood;
 import com.lognsys.babycare.core.funfacts.Compound;
 
@@ -38,5 +40,12 @@ public interface Pregnancy
 	 * @throws PregnancyException 
 	 */
 	public int getPregnancyStage(String lmpDate) throws PregnancyException;
+	
+	/**
+	 * Returns all compounds
+	 * @return 
+	 */
+	public List<Compound> getCompounds();
+	
 
 }

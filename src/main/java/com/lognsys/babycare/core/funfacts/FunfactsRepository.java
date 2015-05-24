@@ -15,5 +15,12 @@ public interface FunfactsRepository
 	 * @return returns all compounds and facts associated.
 	 */
 	public Compound findfactsByCompound(String compound);
+	
+	/**
+	 * 
+	 * @return returns all compounds
+	 */
+	public List<Compound> getAllCompounds();
+	
 
 }
