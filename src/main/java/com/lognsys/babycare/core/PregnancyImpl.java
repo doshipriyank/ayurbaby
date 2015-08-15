@@ -90,4 +90,11 @@ public class PregnancyImpl implements Pregnancy
 
 		return listOfStages;
 	}
+	
+	@Override
+	public int getPregnancyWeek(String lmpDate) throws PregnancyException {
+		
+		return PregnancyUtil.getWeek(lmpDate);
+	}
+
 }

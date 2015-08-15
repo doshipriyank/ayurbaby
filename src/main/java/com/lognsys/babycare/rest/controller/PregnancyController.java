@@ -61,6 +61,13 @@ public class PregnancyController
 		return pregnancy.getPregnancyStage(lmpDate);
 	}
 
+	@RequestMapping(value = "/week/{lmpDate}", method = RequestMethod.GET)
+	public @ResponseBody
+	int pregnancyWeek(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
+	{
+		return pregnancy.getPregnancyWeek(lmpDate);
+	}
+
 	@RequestMapping(value = "/food/{stage}/nutritional", method = RequestMethod.GET)
 	public @ResponseBody
 	List<Nutritional> recommendedNutritionalPegnancyFood(@PathVariable("stage") int stage)

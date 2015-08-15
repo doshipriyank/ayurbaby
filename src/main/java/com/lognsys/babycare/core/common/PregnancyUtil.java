@@ -132,6 +132,31 @@ public class PregnancyUtil
 
 	}
 	
+	public static int getWeek(String lastMenCycleDate) throws PregnancyException{
+	
+		
+		if(lastMenCycleDate.length() != 8 || !(lastMenCycleDate.matches("[0-9]*")))
+			throw new IllegalArgumentException("Error : date parameter invalid - "+lastMenCycleDate);
+
+		// param lmp converted to DateTime
+		DateTime lmpDate = inputDtf.parseDateTime(lastMenCycleDate);
+
+		// check lmpDate > currentDate
+		if (lmpDate.toLocalDate().isAfter(getCurrentDate()))
+			throw new PregnancyException("Invalid Lmp Date - "+lmpDate +" > Today's date - "+getCurrentDate());
+
+		int week = Weeks.weeksBetween(lmpDate.toLocalDate(), getCurrentDate()).getWeeks();
+
+		if (week > MAX_FINAL_WEEK)
+			throw new PregnancyException("Due Date crossed. weeks passed - " + week);
+		
+
+		if (week == 0)
+			return 1;
+		
+		return week;
+	}
+	
 	/**
 	 * get current system local date
 	 * @return

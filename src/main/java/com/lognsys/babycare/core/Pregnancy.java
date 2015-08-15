@@ -33,13 +33,24 @@ public interface Pregnancy
 	public Compound getNutrientsFacts(String nutrient);
 
 	/**
-	 * Get Pregnancy stage ibased on last Menstrual Cycle.
+	 * Get Pregnancy stage based on last Menstrual Cycle.
 	 * 
 	 * @param lmpDate
 	 * @return returns stage as int 
 	 * @throws PregnancyException 
 	 */
 	public int getPregnancyStage(String lmpDate) throws PregnancyException;
+	
+	/**
+	 * Get Pregnancy week based on last Menstrual Cycle.
+	 * 
+	 * @param lmpDate
+	 * @return returns week as int 
+	 * @throws PregnancyException 
+	 */
+	public int getPregnancyWeek(String lmpDate) throws PregnancyException;
+	
+	
 	
 	/**
 	 * Returns all compounds
