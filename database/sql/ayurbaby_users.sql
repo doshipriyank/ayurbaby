@@ -1,10 +1,7 @@
 # ayurbaby_users.sql
-# 6/6/2014
-#
-# Use: ayurbaby app auhtentication
-#
-# 
-#
+# @author : PJD - 6/6/2014
+# Description: ayurbaby_users table to add user profile info 
+# from facebook and google. 
 #
 
 DROP TABLE IF EXISTS ayurbaby_users;
@@ -37,10 +34,10 @@ CREATE TABLE ayurbaby_users (
 	#duedate
 	duedate varchar(16) NOT NULL DEFAULT '',
 	
-	notification TINYINT(1) NOT NULL ZEROFILL,
+	notification TINYINT(1) NOT NULL DEFAULT 0,
 		
 	last_edit timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create unique index ayurbaby_users_username_idx on ayurbaby_users(username);
+create unique index ayurbaby_users_email_idx on ayurbaby_users(email);

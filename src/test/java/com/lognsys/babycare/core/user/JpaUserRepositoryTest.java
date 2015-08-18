@@ -24,12 +24,12 @@ public class JpaUserRepositoryTest {
 		Assert.assertNotNull(user);
 	}
 
-	@Test
-	public void testPreganancyStage() {
-
-		Stage stage = userRepository.findPregnancyStage("pdoshi@yahoo.com");
-		Assert.assertNotNull(stage);
-	}
+//	@Test
+//	public void testPreganancyStage() {
+//
+//		Stage stage = userRepository.findPregnancyStage("pdoshi@yahoo.com");
+//		Assert.assertNotNull(stage);
+//	}
 
 	@Test
 	public void insertUser() {

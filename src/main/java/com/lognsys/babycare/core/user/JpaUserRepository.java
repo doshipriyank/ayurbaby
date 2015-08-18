@@ -43,13 +43,10 @@ public class JpaUserRepository implements UserRepository {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	public void addUser(User user) 
 	{
-		entityManager.getTransaction().begin();
 		entityManager.persist(user);
-		entityManager.getTransaction().commit();
-		entityManager.clear();
 	}
 
 	// @Override
