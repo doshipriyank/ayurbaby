@@ -1,6 +1,8 @@
 #!/bin/bash
 
-PROJECT_HOME=${HOME}/git/ayurbaby
+PROJECT_HOME=${HOME}/ayurbaby_working
 export PROJECT_HOME
 
-AYURBABY_CLASSPATH=${PROJECT_HOME}/target/ayurbaby.war
+#AYURBABY_CLASSPATH=${PROJECT_HOME}/target/ayurbaby.war
+AYURBABY_CLASSPATH=${PROJECT_HOME}/ayurbaby.jar
+export AYURBABY_CLASSPATH

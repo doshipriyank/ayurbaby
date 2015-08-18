@@ -1,9 +1,16 @@
-README:
+README
+
+I) HOW TO LOAD DATA INTO MYSQL DATABASE
+
+USAGE . scripts/load_ayurbaby_data.sh 
+
+STEPS BEFORE RUNNING THE PROGRAM
 
 Build.xml requires to lib dependencies
 
 1. Create "lib" directory in basedir or contextroot and add following dependencies from maven
-lib/aopalliance-1.0.jar lib/commons-dbcp-1.4.jar 
+lib/aopalliance-1.0.jar 
+lib/commons-dbcp-1.4.jar 
 lib/commons-logging-api-1.1.jar 
 lib/commons-pool-1.5.4.jar 
 lib/dom4j-1.6.1.jar
@@ -20,3 +27,8 @@ lib/spring-expression-4.0.5.RELEASE.jar
 lib/spring-jdbc-4.0.5.RELEASE.jar
 lib/spring-tx-4.0.5.RELEASE.jar 
 lib/xmlbeans-2.3.0.jar
+
+
+2) ant jar
+
+3) run program ./load_ayurbaby.sh funfacts

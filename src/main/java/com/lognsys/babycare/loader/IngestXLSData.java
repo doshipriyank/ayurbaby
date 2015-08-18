@@ -122,6 +122,7 @@ public class IngestXLSData implements Ingest
 			case funfacts:
 				System.out.println("Parsing funfacts Sheet......");
 				List<FunfactsVO> listOfFunFactsVO = parser.parseFunFacts(sheet);
+				System.out.println("FUN FACTS SIZE -  "+listOfFunFactsVO.size());
 				loadData(listOfFunFactsVO, EXCELSHEETS.funfacts);
 				break;
 
@@ -306,12 +307,13 @@ public class IngestXLSData implements Ingest
 
 		{
 			try
-			{
+			{       System.out.println("In - SQL INSERT COMPOUND" );
 				rowCount = jdbcTemplate.batchUpdate(this.sqlProperty.getProperty("INSERT_COMPOUND"), params);
 			}
 			catch (DataAccessException dae)
 			{
 				log.error(dae.getMessage());
+				System.out.println(dae.getMessage());
 			}
 		}
 		return rowCount.length;
