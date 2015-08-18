@@ -12,7 +12,10 @@
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
+			</bean>
 		</property>
 		<property name="jpaProperties">
 			<props>
@@ -21,10 +24,6 @@
 			</props>
 		</property>
 		<!-- Defines the SQL dialect used in Hiberante's application -->
-<!-- 		<property name="jpaDialect">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
-		</property> -->
-		<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
 	
 		<property name="dataSource" ref="dataSource" />
 	</bean>
