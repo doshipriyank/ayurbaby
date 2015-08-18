@@ -20,6 +20,11 @@
 				<prop key="hibernate.format_sql">true</prop>
 			</props>
 		</property>
+		 <!-- Defines the SQL dialect used in Hiberante's application -->
+           <property name="jpaDialect">
+        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+    </property>
+     
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
