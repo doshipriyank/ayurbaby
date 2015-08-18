@@ -5,6 +5,9 @@ import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.lognsys.babycare.core.stage.Stage;
 import com.lognsys.babycare.core.user.UserRepository;
 
@@ -40,6 +43,7 @@ public class JpaUserRepository implements UserRepository {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void addUser(User user) 
 	{
 		entityManager.getTransaction().begin();
