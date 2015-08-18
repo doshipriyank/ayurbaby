@@ -4,13 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.lognsys.babycare.core.stage.Stage;
 
 @Entity
 @Table(name = "ayurbaby_users")
@@ -24,96 +19,131 @@ public class User implements Serializable
 	@Id
 	@Column(name = "id")
 	private int id;
+	
+	@Column(name = "auth_id")
+	private int auth_id;
+	
+	@Column(name="firstname")
+	private String firstName;
+	
+	@Column(name="lastname")
+	private String lastName;
+	
+	@Column(name = "lastmenperiod")
+	private String lastMenPeriod;
+	
+	@Column(name = "email")
+	private String email;
 
-	@Column(name = "username")
-	private String username;
-
-	@Column(name = "pword")
-	private String password;
-
-	@Column(name = "fullname")
-	private String fullname;
-
-	@Column(name = "phone")
+	@Column(name="location")
+	private String location;
+	
+	@Column(name="phone")
 	private String phone;
+	
+	@Column(name="birthdate")
+	private String birthDate;
+	
+	@Column(name="duedate")
+	private String dueDate;
+	
+	@Column(nullable = false, columnDefinition = "TINYINT", length = 1, name="notification")
+	private boolean notification;
 
-	@Column(name = "address")
-	private String address;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "stage_id")
-	private Stage stage;
-
-	public int getId()
-	{
+	public int getId() {
 		return id;
 	}
 
-	public void setId(int id)
-	{
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getUsername()
-	{
-		return username;
+	public int getAuth_id() {
+		return auth_id;
 	}
 
-	public void setUsername(String username)
-	{
-		this.username = username;
+	public void setAuth_id(int auth_id) {
+		this.auth_id = auth_id;
 	}
 
-	public String getPassword()
-	{
-		return password;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setPassword(String password)
-	{
-		this.password = password;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getFullname()
-	{
-		return fullname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setFullname(String fullname)
-	{
-		this.fullname = fullname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public String getPhone()
-	{
+	public String getLastMenPeriod() {
+		return lastMenPeriod;
+	}
+
+	public void setLastMenPeriod(String lastMenPeriod) {
+		this.lastMenPeriod = lastMenPeriod;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(String phone)
-	{
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
-	public String getAddress()
-	{
-		return address;
+	public String getBirthDate() {
+		return birthDate;
 	}
 
-	public void setAddress(String address)
-	{
-		this.address = address;
+	public void setBirthDate(String birthDate) {
+		this.birthDate = birthDate;
 	}
 
-	public Stage getStage()
-	{
-		return stage;
+	public String getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public boolean isNotification() {
+		return notification;
+	}
+
+	public void setNotification(boolean notification) {
+		this.notification = notification;
 	}
 
 	@Override
-	public String toString()
-	{
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", fullname=" + fullname
-				+ ", phone=" + phone + ", address=" + address + ", stage=" + stage + "]";
+	public String toString() {
+		return "User [id=" + id + ", auth_id=" + auth_id + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", lastMenPeriod=" + lastMenPeriod + ", email=" + email + ", location=" + location + ", phone="
+				+ phone + ", birthDate=" + birthDate + ", dueDate=" + dueDate + ", notification=" + notification + "]";
 	}
+	
 
 }
