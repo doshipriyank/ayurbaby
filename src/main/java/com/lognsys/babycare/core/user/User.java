@@ -21,7 +21,7 @@ public class User implements Serializable
 	private int id;
 	
 	@Column(name = "auth_id")
-	private int auth_id;
+	private String auth_id;
 	
 	@Column(name="firstname")
 	private String firstName;
@@ -58,11 +58,11 @@ public class User implements Serializable
 		this.id = id;
 	}
 
-	public int getAuth_id() {
+	public String getAuth_id() {
 		return auth_id;
 	}
 
-	public void setAuth_id(int auth_id) {
+	public void setAuth_id(String auth_id) {
 		this.auth_id = auth_id;
 	}
 
