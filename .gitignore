@@ -1,7 +1,7 @@
 #west app specific git ignore
 *target*
 *builds*
-*.jar
+#*.jar
 *.war
 *.ear
 *.class
