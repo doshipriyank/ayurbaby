@@ -47,6 +47,17 @@ public class User implements Serializable
 	@Column(name="duedate")
 	private String dueDate;
 	
+	public String getStage() {
+		return stage;
+	}
+
+	public void setStage(String stage) {
+		this.stage = stage;
+	}
+
+	@Column(name="stage_id")
+	private String stage;
+	
 	@Column(nullable = false, columnDefinition = "TINYINT", length = 1, name="notification")
 	private boolean notification;
 
@@ -138,12 +149,6 @@ public class User implements Serializable
 		this.notification = notification;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", auth_id=" + auth_id + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", lastMenPeriod=" + lastMenPeriod + ", email=" + email + ", location=" + location + ", phone="
-				+ phone + ", birthDate=" + birthDate + ", dueDate=" + dueDate + ", notification=" + notification + "]";
-	}
-	
+
 
 }
