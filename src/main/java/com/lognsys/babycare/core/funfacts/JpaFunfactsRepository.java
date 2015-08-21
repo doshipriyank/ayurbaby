@@ -67,10 +67,14 @@ public class JpaFunfactsRepository implements FunfactsRepository
 	@Override
 	public Compound findfactsByCompound(String compound)
 	{
+		//	System.out.println("MAX RESULT - "+  entityManager.createQuery(properties.getProperty("SELECT_COMPOUND_FACTS"), Compound.class)
+		//		.setParameter("compound", compound.trim()).getResultList().size());
 
+		
 		return (Compound) entityManager.createQuery(properties.getProperty("SELECT_COMPOUND_FACTS"), Compound.class)
-				.setParameter("compound", compound.trim()).getSingleResult();
+                                .setParameter("compound", compound.trim()).getSingleResult();
 
+	
 	}
 
 }

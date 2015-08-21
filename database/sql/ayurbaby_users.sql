@@ -35,6 +35,8 @@ CREATE TABLE ayurbaby_users (
 	duedate varchar(16) NOT NULL DEFAULT '',
 	
 	notification TINYINT(1) NOT NULL DEFAULT 0,
+	
+	stage_id int(1) NOT NULL DEFAULT 0,
 		
 	last_edit timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	

@@ -35,6 +35,7 @@ public class Compound implements Serializable
 	@OneToMany( cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="compound_id")
 	@JsonManagedReference
+//	@OneToMany(mappedBy="compound")
 	private List<Facts> facts;
 
 	public int getId()

@@ -78,7 +78,7 @@ public class PregnancyTest
 
 	}
 
-	@Test
+/*	@Test
 	public void testGetNutrientFacts()
 	{
 		Compound Fats = pregnancy.getNutrientsFacts("fats");
@@ -124,7 +124,7 @@ public class PregnancyTest
 		
 		Compound emptList = pregnancy.getNutrientsFacts(" ");
 		Assert.assertNull(emptList);
-	}
+	}*/
 	
 	@Test
 	public void testCalculateDueDate() throws PregnancyException

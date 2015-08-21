@@ -33,18 +33,19 @@ public class PregnancyController
 	@Autowired
 	private Pregnancy pregnancy;
 
-	@RequestMapping(value = "/compounds", method = RequestMethod.GET)
+	@RequestMapping(value = "/compounds/all", method = RequestMethod.GET)
 	public @ResponseBody
 	List<Compound> getCompounds()
 	{
 		return pregnancy.getCompounds();
 	}
 
-	@RequestMapping(value = "/compounds/{nutrient}", method = RequestMethod.GET)
+	@RequestMapping(value = "/compounds/{name}", method = RequestMethod.GET)
 	public @ResponseBody
-	Compound getCompoundFacts(@PathVariable("nutrient") String nutrient)
+	Compound getCompoundFacts(@PathVariable("name") String nutrient)
 	{
 		return pregnancy.getNutrientsFacts(nutrient);
+		
 	}
 
 	@RequestMapping(value = "/duedate/{lmpDate}", method = RequestMethod.GET)

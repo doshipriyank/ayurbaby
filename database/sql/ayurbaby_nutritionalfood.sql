@@ -48,5 +48,4 @@ CREATE TABLE ayurbaby_nutritionalfood (
 ) ENGINE=innoDB DEFAULT CHARSET=utf8;
 
 #create unique index ayurbaby_nutritionalfood_food_idx on ayurbaby_nutritionalfood(food(16)); 
-
 #create unique index ayurbaby_nutritionalfood_fruits_idx on ayurbaby_nutritionalfood(fruits(16)); 

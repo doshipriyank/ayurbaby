@@ -182,10 +182,5 @@
 			<artifactId>spring-expression</artifactId>
 			<version>4.0.5.RELEASE</version>
 		</dependency>
-		<dependency>
-    			<groupId>org.aopalliance</groupId>
-    			<artifactId>aopalliance</artifactId>
-    			<version>1.0</version>
-		</dependency>
 	</dependencies>
 </project>
