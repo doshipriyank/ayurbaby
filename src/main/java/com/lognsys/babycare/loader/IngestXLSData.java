@@ -122,7 +122,6 @@ public class IngestXLSData implements Ingest
 			case funfacts:
 				System.out.println("Parsing funfacts Sheet......");
 				List<FunfactsVO> listOfFunFactsVO = parser.parseFunFacts(sheet);
-				System.out.println("FUN FACTS SIZE -  "+listOfFunFactsVO.size());
 				loadData(listOfFunFactsVO, EXCELSHEETS.funfacts);
 				break;
 

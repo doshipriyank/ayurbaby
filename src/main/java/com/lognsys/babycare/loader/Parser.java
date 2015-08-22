@@ -3,7 +3,7 @@ package com.lognsys.babycare.loader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Arrays;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -155,6 +155,9 @@ public class Parser
 		int compound_id = 0;
 		StringBuilder sb = null;
 
+		List<String> listOfCompounds = new ArrayList<String>(Arrays.asList(IngestXLSData.getOrganicCompunds()));
+		boolean isQuestion = false;
+
 		while (rowIterator.hasNext())
 		{
 			Row row = rowIterator.next();
@@ -162,54 +165,60 @@ public class Parser
 			// Assuming only cell 0 has data.
 			Cell cell = row.getCell(0);
 
-			// data
+			// data got from each row
 			String data = getCellValue(cell);
-			
-			String[] organicCompounds = IngestXLSData.getOrganicCompunds();
 
-			for (int i = 0; i < organicCompounds.length; i++)
+
+			for (int i = 0; i < listOfCompounds.size(); i++)
 			{
-				if (organicCompounds[i].equalsIgnoreCase(data))
+				
+				if (listOfCompounds.get(i).equalsIgnoreCase(data))
 				{
-					compound_id = i;
-					compound_id = compound_id + 1;
-				}
+					//final add of question and ans to funfactsVo to list before moving to a new compound
+					if(sb != null) {
+					  funFacts.setAnswer(sb.toString());
+                                          listOfFunFacts.add(funFacts);							
+					}
 
+					compound_id = i + 1;
+					isQuestion = false;
+					sb = null;
+				}  
+				
 			}
 
+			//check if the sentence ends with ? and add question to FunFactsVO
 			if (data.trim().endsWith("?"))
 			{
+                                if(sb != null) {
+                                    funFacts.setAnswer(sb.toString());
+                                    listOfFunFacts.add(funFacts);
+				}
+
+				isQuestion = true;
 				funFacts = new FunfactsVO();
 				funFacts.setCompound_id(compound_id);
 				funFacts.setQuestion(data);
-
 				sb = new StringBuilder();
-
-			}
-
-			if (!data.trim().endsWith("?"))
-			{
-
-				if (sb != null)
-				{
-					sb.append(data);
-
-				}
-
-			}
-
-			if (data.isEmpty())
-			{
-				funFacts.setAnswer(sb.toString());
-				listOfFunFacts.add(funFacts);
+				
 				noOfParsedFunfactsRow++;
-			}
 
-			
+			}
+		
+			//check if the sentence does not end with ? and add sentence to the corresponding question FunFactsVO	
+			if(isQuestion && !data.trim().endsWith("?") )  {
+				sb.append(data);		
+			}	
+
+			// check if row is last and add last compound in FunFactsVO	
+			if ( ! rowIterator.hasNext()) {
+                            funFacts.setAnswer(sb.toString());
+                                    listOfFunFacts.add(funFacts);
+			}
+    
 		}
 
 		return listOfFunFacts;
-
 	}
 
 	/**

@@ -1,7 +1,7 @@
 #west app specific git ignore
 *target*
 *builds*
-#*.jar
+ayurbaby.jar
 *.war
 *.ear
 *.class
