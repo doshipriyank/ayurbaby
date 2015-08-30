@@ -20,7 +20,7 @@ CREATE TABLE ayurbaby_users (
 	lastmenperiod varchar(64) NOT NULL DEFAULT '',
 	
 	#email can be used as username
-	email varchar(80) NOT NULL DEFAULT '',
+	email varchar(80) UNIQUE NOT NULL,
 
 	#location name
 	location varchar(128) NOT NULL DEFAULT '',
@@ -30,6 +30,10 @@ CREATE TABLE ayurbaby_users (
 	
 	#birthdate
 	birthdate varchar(16) NOT NULL DEFAULT '',
+	
+	#birthdate
+	provenance varchar(16) NOT NULL DEFAULT '',
+	
 	
 	#duedate
 	duedate varchar(16) NOT NULL DEFAULT '',

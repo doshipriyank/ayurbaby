@@ -7,30 +7,25 @@
 # 06/24/14 - removed stage_id
 # 06/24/14 - added group_id
 # 07/08/14 - removed group_id field
-#
 
 DROP TABLE IF EXISTS ayurbaby_ayurved;
 
 CREATE TABLE ayurbaby_ayurved (
 	
 	# surogate primary key
-	id integer AUTO_INCREMENT PRIMARY KEY,
+	id integer auto_increment primary key,
 
-	#stage_id integer not null,	
-
-	#group_id varchar(32) NOT NULL DEFAULT '',
-
-	#ayurvedic String value 
-	ayurvedic_med varchar(64) NOT NULL DEFAULT '',
+	#medicine string value
+	medicine varchar(20000) not null default '',
 
 	#prepmethod String value
-        prepmethod varchar(512) NOT NULL DEFAULT '',
+        benefit text not null default '',
 	
-	#nutritional_value String value
-	nutritional_value varchar(512) NOT NULL DEFAULT '',
+	#recipes string value
+	recipes text not null default '',
 	
-	#foetus Development 
-	foetus_dev varchar(512) NOT NULL DEFAULT '',
+	#warnings string value
+	warning text not null default '',
 
 	last_edit timestamp not null default current_timestamp on update current_timestamp
 	#FOREIGN KEY (stage_id) REFERENCES ayurbaby_stages(id)

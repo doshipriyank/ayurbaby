@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,7 +33,7 @@ public class Stage implements Serializable
 	private static final long serialVersionUID = -1072841349324968487L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
@@ -45,9 +46,9 @@ public class Stage implements Serializable
 	@Column(name = "last_edit")
 	private Date last_edit;
 
-	@OneToMany(fetch=FetchType.EAGER)
-	@JoinColumn(name = "stage_id")
-	private Collection<User> users;
+//	@OneToMany(fetch=FetchType.EAGER)
+//	@JoinColumn(name = "stage_id")
+//	private Collection<User> users;
 
 	@JoinTable(name = "ayurbaby_stage_ayurved", joinColumns = { @JoinColumn(name = "stage_id") }, inverseJoinColumns = { @JoinColumn(name = "ayurved_id") })
 	@ManyToMany
@@ -99,16 +100,16 @@ public class Stage implements Serializable
 		this.last_edit = last_edit;
 	}
 
-	public Collection<User> getUsers()
-	{
-		return users;
-		
-	}
-
-	public void setUsers(Collection<User> users)
-	{
-		this.users = users;
-	}
+//	public Collection<User> getUsers()
+//	{
+//		return users;
+//		
+//	}
+//
+//	public void setUsers(Collection<User> users)
+//	{
+//		this.users = users;
+//	}
 
 	@Override
 	public String toString()

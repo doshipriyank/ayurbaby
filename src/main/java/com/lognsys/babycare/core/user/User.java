@@ -4,49 +4,66 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "ayurbaby_users")
-public class User implements Serializable
-{
-	/**
-	 * 
-	 */
+public class User implements Serializable {
+
 	private static final long serialVersionUID = 5161794650595376352L;
 
-	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "auth_id")
 	private String auth_id;
-	
-	@Column(name="firstname")
+
+	@Column(name = "firstname")
 	private String firstName;
-	
-	@Column(name="lastname")
+
+	@Column(name = "lastname")
 	private String lastName;
-	
+
 	@Column(name = "lastmenperiod")
 	private String lastMenPeriod;
-	
+
+	@Id
 	@Column(name = "email")
 	private String email;
 
-	@Column(name="location")
+	@Column(name = "location")
 	private String location;
-	
-	@Column(name="phone")
+
+	@Column(name = "phone")
 	private String phone;
-	
-	@Column(name="birthdate")
+
+	@Column(name = "birthdate")
 	private String birthDate;
-	
-	@Column(name="duedate")
+
+	@Column(name = "duedate")
 	private String dueDate;
+
+	@Column(name = "stage_id")
+	private String stage;
+
+	@Column(nullable = false, columnDefinition = "TINYINT", length = 1, name = "notification")
+	private boolean notification;
 	
+	@Column(name = "provenance")
+	private String provenance;
+
+	public String getProvenance() {
+		return provenance;
+	}
+
+	public void setProvenance(String provenance) {
+		this.provenance = provenance;
+	}
+
 	public String getStage() {
 		return stage;
 	}
@@ -54,12 +71,6 @@ public class User implements Serializable
 	public void setStage(String stage) {
 		this.stage = stage;
 	}
-
-	@Column(name="stage_id")
-	private String stage;
-	
-	@Column(nullable = false, columnDefinition = "TINYINT", length = 1, name="notification")
-	private boolean notification;
 
 	public int getId() {
 		return id;
@@ -149,6 +160,12 @@ public class User implements Serializable
 		this.notification = notification;
 	}
 
-
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", auth_id=" + auth_id + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", lastMenPeriod=" + lastMenPeriod + ", email=" + email + ", location=" + location + ", phone="
+				+ phone + ", birthDate=" + birthDate + ", dueDate=" + dueDate + ", stage=" + stage + ", notification="
+				+ notification + "]";
+	}
 
 }

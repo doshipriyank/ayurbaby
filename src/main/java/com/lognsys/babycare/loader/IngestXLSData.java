@@ -228,8 +228,9 @@ public class IngestXLSData implements Ingest
 		{
 			try
 			{
+				//type casting
 				AyurvedicVO ayurVo = ((AyurvedicVO) obj);
-				// ingest ayurbaby_nutritionalfood
+				// ingest ayurvedic
 				BeanPropertySqlParameterSource ayurVoBeanParam = new BeanPropertySqlParameterSource(ayurVo);
 				KeyHolder ayurVoKeyHolder = new GeneratedKeyHolder();
 				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_AYURVED"), ayurVoBeanParam,
@@ -237,7 +238,7 @@ public class IngestXLSData implements Ingest
 				
 				 rowCount = rowCount + row;
 
-				// ingest ayurbaby_stages_nutritionalfood
+				//ingest ayurbaby_stages_ayurvedicfood
 				int[] monthArr = Util.normalizeMonths(ayurVo.getMonth(), ",");
 
 				for (int month : monthArr)

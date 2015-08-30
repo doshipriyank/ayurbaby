@@ -9,9 +9,12 @@ import org.apache.log4j.Logger;
 import org.joda.time.IllegalFieldValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +24,7 @@ import com.lognsys.babycare.core.Pregnancy;
 import com.lognsys.babycare.core.food.Nutritional;
 import com.lognsys.babycare.core.food.Ayurvedic;
 import com.lognsys.babycare.core.funfacts.Compound;
+import com.lognsys.babycare.core.user.User;
 import com.lognsys.babycare.core.PregnancyException;
 
 @Controller
@@ -29,6 +33,8 @@ public class PregnancyController
 {
 
 	private final Logger LOG = Logger.getLogger(getClass());
+	
+	int mockStage = 0;
 	
 	@Autowired
 	private Pregnancy pregnancy;
@@ -47,6 +53,23 @@ public class PregnancyController
 		return pregnancy.getNutrientsFacts(nutrient);
 		
 	}
+	
+	/**
+	 * 
+	 * @param user
+	 */
+	@RequestMapping(value="/adduser")
+	public ResponseEntity<String> addUser(@RequestBody User user) {
+		
+		 pregnancy.saveOrUpdateUser(user);
+		 
+			return new ResponseEntity<>(HttpStatus.OK);
+		
+//		if(isSuccess)
+//			return new ResponseEntity<>(HttpStatus.OK);
+//		else
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
 
 	@RequestMapping(value = "/duedate/{lmpDate}", method = RequestMethod.GET)
 	public @ResponseBody
@@ -62,6 +85,24 @@ public class PregnancyController
 		return pregnancy.getPregnancyStage(lmpDate);
 	}
 
+	
+	@RequestMapping(value = "/mockstage/{lmpDate}", method = RequestMethod.GET)
+	public @ResponseBody
+	int mockPregnancyStage(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
+	{
+		if(mockStage > 9)
+			mockStage = 0;
+		
+		mockStage++;
+		
+		return mockStage;
+		//return pregnancy.getPregnancyStage(lmpDate);
+	}
+
+	
+	
+	
+	
 	@RequestMapping(value = "/week/{lmpDate}", method = RequestMethod.GET)
 	public @ResponseBody
 	int pregnancyWeek(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
@@ -84,6 +125,9 @@ public class PregnancyController
 		return pregnancy.recommendedPregnancyFood(stage).getAyurvedicFood();
 
 	}
+	
+	
+	
 
 	/**
 	 * Maps IllegalArgumentExceptions to a 404 Not Found HTTP status code.

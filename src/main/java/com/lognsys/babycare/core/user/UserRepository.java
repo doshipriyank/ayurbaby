@@ -1,7 +1,5 @@
 package com.lognsys.babycare.core.user;
 
-import com.lognsys.babycare.core.stage.Stage;
-
 public interface UserRepository
 {
 
@@ -11,6 +9,6 @@ public interface UserRepository
 
 	public User findUserById(int user_id);
 	
-	public void addUser(User user);
-
+	public boolean saveOrUpdate(User user);
+	
 }

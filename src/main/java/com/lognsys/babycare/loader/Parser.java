@@ -55,19 +55,11 @@ public class Parser
 						nutVo.setFood(getCellValue(cell));
 
 					if (cell.getColumnIndex() == 2)
-						nutVo.setPrepmethod(getCellValue(cell));
-
+						nutVo.setBenefit(getCellValue(cell));
+			
 					if (cell.getColumnIndex() == 3)
-						nutVo.setNutritionalValue(getCellValue(cell));
+						nutVo.setWarning(getCellValue(cell));
 
-					if (cell.getColumnIndex() == 4)
-						nutVo.setFoetus_dev(getCellValue(cell));
-
-					if (cell.getColumnIndex() == 5)
-						nutVo.setWarnings(getCellValue(cell));
-
-					if (cell.getColumnIndex() == 6)
-						nutVo.setFruits(getCellValue(cell));
 				}
 
 			}
@@ -114,16 +106,16 @@ public class Parser
 						ayurVo.setMonth(getCellValue(cell));
 	
 					if (cell.getColumnIndex() == 1)
-						ayurVo.setAyurvedic_med(getCellValue(cell));
+						ayurVo.setMedicine(getCellValue(cell));
 
 					if (cell.getColumnIndex() == 2)
-						ayurVo.setPrepmethod(getCellValue(cell));
+						ayurVo.setBenefit(getCellValue(cell));
 
 					if (cell.getColumnIndex() == 3)
-						ayurVo.setNutritional_value(getCellValue(cell));
+						ayurVo.setRecipes(getCellValue(cell));
 
 					if (cell.getColumnIndex() == 4)
-						ayurVo.setFoetus_dev(getCellValue(cell));
+						ayurVo.setWarning(getCellValue(cell));
 
 				}
 

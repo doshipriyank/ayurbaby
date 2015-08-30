@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lognsys.babycare.core.food.PregnancyFood;
 import com.lognsys.babycare.core.funfacts.Compound;
+import com.lognsys.babycare.core.user.User;
 
 
 public interface Pregnancy
@@ -58,5 +59,9 @@ public interface Pregnancy
 	 */
 	public List<Compound> getCompounds();
 	
+	/**
+	 * 
+	 */
+	public void saveOrUpdateUser(User user);
 
 }

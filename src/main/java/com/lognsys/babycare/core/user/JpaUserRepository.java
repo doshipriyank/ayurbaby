@@ -1,17 +1,18 @@
 package com.lognsys.babycare.core.user;
 
 import java.util.Properties;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.lognsys.babycare.core.stage.Stage;
 import com.lognsys.babycare.core.user.UserRepository;
 
 public class JpaUserRepository implements UserRepository {
+
+	Logger LOG = Logger.getLogger(getClass().getName());
+
+	@PersistenceContext
 	private EntityManager entityManager;
 
 	private Properties properties;
@@ -36,17 +37,30 @@ public class JpaUserRepository implements UserRepository {
 		this.entityManager = entityManager;
 	}
 
+	/**
+	 * @param user
+	 */
 	@Override
-	public User findUserById(int user_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public boolean saveOrUpdate(User user) {
 
-	@Override
-	@Transactional
-	public void addUser(User user) 
-	{
-		entityManager.persist(user);
+		User savedUser = entityManager.find(User.class, user.getEmail());
+
+		String primaryKey;
+
+		if (savedUser == null) {
+			entityManager.persist(user);
+			entityManager.flush();
+			primaryKey = user.getEmail();
+			LOG.info("User value inserted by user - " + primaryKey);
+		} else {
+			user.setId(savedUser.getId());
+			entityManager.merge(user);
+			primaryKey = savedUser.getEmail();
+			LOG.info("User profile updated by user - " + primaryKey);
+		}
+		return (!primaryKey.isEmpty() || primaryKey != null);
+
 	}
 
 	// @Override
@@ -60,19 +74,11 @@ public class JpaUserRepository implements UserRepository {
 	// return user.getStage();
 	// }
 	//
-	// @Override
-	// public User findUserById(int user_id)
-	// {
-	// return (User)
-	// entityManager.createNativeQuery(properties.getProperty("SELECT_USER"),
-	// User.class)
-	// .setParameter(1, user_id).getSingleResult();
-	// }
-	//
-	// @Override
-	// public void updateStage(String username)
-	// {
-	// //TODO update stage based on lmpdate
-	// }
+
+	@Override
+	public User findUserById(int user_id) {
+		return (User) entityManager.createNativeQuery(properties.getProperty("SELECT_USER"), User.class)
+				.setParameter(1, user_id).getSingleResult();
+	}
 
 }

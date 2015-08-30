@@ -6,6 +6,7 @@ public class Util
 {
 
 	/**
+	 * convert string delimited month to month[] eg: "1,2,3" = month = {1,2,3} 
 	 * 
 	 * @param months
 	 * @param delim
@@ -18,6 +19,7 @@ public class Util
 			throw new IllegalArgumentException("Illegal parameter found - " + months + "\n"
 					+ "Month cannot be normailzed");
 
+		//if value = 1 than return ar[0] = 1
 		if (months.trim().length() == 1)
 		{
 			int val = Integer.parseInt(months.trim());
@@ -27,6 +29,7 @@ public class Util
 
 		}
 
+		//break using string tokenizer of month (1,2,3) = month[] ->{1,2,3}
 		StringTokenizer str = new StringTokenizer(months, delim);
 		int[] monthArr = new int[str.countTokens()];
 

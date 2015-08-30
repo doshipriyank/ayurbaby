@@ -11,9 +11,10 @@ import com.lognsys.babycare.core.funfacts.Compound;
 import com.lognsys.babycare.core.funfacts.FunfactsRepository;
 import com.lognsys.babycare.core.stage.Stage;
 import com.lognsys.babycare.core.stage.StageRepository;
+import com.lognsys.babycare.core.user.User;
+import com.lognsys.babycare.core.user.UserRepository;
 
-public class PregnancyImpl implements Pregnancy
-{
+public class PregnancyImpl implements Pregnancy {
 
 	@Autowired
 	private PregnancyFood pregnancyFood;
@@ -22,25 +23,26 @@ public class PregnancyImpl implements Pregnancy
 
 	private FunfactsRepository funFactsRepository;
 
+	private UserRepository userRepository;
+
 	private static List<Stage> listOfStages;
 
-	public PregnancyImpl(StageRepository stageRepository, FunfactsRepository funFactsRepository)
-	{
+	public PregnancyImpl(StageRepository stageRepository, FunfactsRepository funFactsRepository,
+			UserRepository userRepository) {
 		this.stageRepository = stageRepository;
 		this.funFactsRepository = funFactsRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
-	public PregnancyFood recommendedPregnancyFood(int stage)
-	{
+	public PregnancyFood recommendedPregnancyFood(int stage) {
 		pregnancyFood.setPregnancyFood(stage);
 		return pregnancyFood;
 
 	}
 
 	@Override
-	public String calculateDueDate(String lmpDate) throws PregnancyException
-	{
+	public String calculateDueDate(String lmpDate) throws PregnancyException {
 		String pregnancyDate = null;
 
 		pregnancyDate = PregnancyUtil.calculateDueDate(lmpDate);
@@ -49,27 +51,23 @@ public class PregnancyImpl implements Pregnancy
 	}
 
 	@Override
-	public Compound getNutrientsFacts(String nutrient)
-	{
+	public Compound getNutrientsFacts(String nutrient) {
 
 		return this.funFactsRepository.findfactsByCompound(nutrient);
 	}
-	
+
 	@Override
-	public List<Compound> getCompounds()
-	{
+	public List<Compound> getCompounds() {
 		return this.funFactsRepository.getAllCompounds();
 	}
 
 	@Override
-	public int getPregnancyStage(String lmpDate) throws PregnancyException
-	{
+	public int getPregnancyStage(String lmpDate) throws PregnancyException {
 		int totalPegnancyWeek = 0;
 
 		List<String> weeks = new ArrayList<String>();
 
-		for (Stage stage : getCachedStages())
-		{
+		for (Stage stage : getCachedStages()) {
 			weeks.add(stage.getWeek());
 		}
 
@@ -83,18 +81,22 @@ public class PregnancyImpl implements Pregnancy
 	 * 
 	 * @return list of Stage
 	 */
-	private List<Stage> getCachedStages()
-	{
+	private List<Stage> getCachedStages() {
 		if (listOfStages == null)
 			listOfStages = this.stageRepository.getAllStages();
 
 		return listOfStages;
 	}
-	
+
 	@Override
 	public int getPregnancyWeek(String lmpDate) throws PregnancyException {
-		
 		return PregnancyUtil.getWeek(lmpDate);
+	}
+
+
+	@Override
+	public void saveOrUpdateUser(User user) {
+		 this.userRepository.saveOrUpdate(user);
 	}
 
 }

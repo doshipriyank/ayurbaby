@@ -21,6 +21,7 @@
 			<props>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
+			    <prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 		<!-- Defines the SQL dialect used in Hiberante's application -->

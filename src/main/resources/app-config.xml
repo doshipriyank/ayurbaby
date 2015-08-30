@@ -18,6 +18,7 @@
 	<bean id="pregnancy" class="com.lognsys.babycare.core.PregnancyImpl">
 		<constructor-arg name="stageRepository" ref="jpaStageRepository" />
 		<constructor-arg name="funFactsRepository" ref="jpaFunfactsRepository" />
+		<constructor-arg name="userRepository" ref="jpaUserRepository"></constructor-arg>
 	</bean>
 
 

@@ -10,7 +10,7 @@
 
 	<bean id="xlsResource" class="com.lognsys.babycare.loader.IngestXLSData">
 		<constructor-arg name="resource"
-			value="classpath:files/AyurBaby.xlsx" />
+			value="classpath:files/ayurbaby.xls" />
 		<constructor-arg name="dataSource" ref="dataSource" />
 		<constructor-arg name="sqlProperty" ref="sqlProperties" />
 	</bean>
