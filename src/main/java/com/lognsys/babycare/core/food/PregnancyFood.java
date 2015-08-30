@@ -1,7 +1,7 @@
 package com.lognsys.babycare.core.food;
 
 import java.util.List;
-import java.util.Map;
+
 
 
 public interface PregnancyFood
@@ -25,6 +25,12 @@ public interface PregnancyFood
 	 * @return list Nutritional
 	 */
 	public List<Ayurvedic> getAyurvedicFood();
+	
+	/**
+	 * 
+	 * @return list Recipes
+	 */
+	public List<Recipes> getRecipes();
 	
 
 }

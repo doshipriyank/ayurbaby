@@ -51,4 +51,12 @@ public class JpaPregnancyFoodRepository implements PregnancyFoodRepository
 				.setParameter("stage", stage).getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Recipes> findRecipesByStage(int stage) {
+		
+	 return (List<Recipes>) entityManager.createQuery(properties.getProperty("SELECT_RECIPES_BYSTAGE"))
+				.setParameter("stage", stage).getResultList();
+	}
+
 }

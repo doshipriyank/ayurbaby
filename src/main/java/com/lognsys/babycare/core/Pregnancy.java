@@ -28,7 +28,7 @@ public interface Pregnancy
 	public String calculateDueDate(String lmpDate) throws PregnancyException;
 
 	/**
-	 * @param compound
+	 * @param Nutrients
 	 * @return
 	 */
 	public Compound getNutrientsFacts(String nutrient);

@@ -21,4 +21,12 @@ public interface PregnancyFoodRepository
 	 */
 	public List<Ayurvedic> findAyurvedicByStage(int stage);
 
+	/**
+	 * Returns List Recipes
+	 * 
+	 * @param stage
+	 * @return
+	 */
+	public List<Recipes> findRecipesByStage(int stage);
+
 }

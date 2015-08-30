@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.lognsys.babycare.core.Pregnancy;
 import com.lognsys.babycare.core.food.Nutritional;
+import com.lognsys.babycare.core.food.Recipes;
 import com.lognsys.babycare.core.food.Ayurvedic;
 import com.lognsys.babycare.core.funfacts.Compound;
 import com.lognsys.babycare.core.user.User;
@@ -84,23 +85,6 @@ public class PregnancyController
 	{
 		return pregnancy.getPregnancyStage(lmpDate);
 	}
-
-	
-	@RequestMapping(value = "/mockstage/{lmpDate}", method = RequestMethod.GET)
-	public @ResponseBody
-	int mockPregnancyStage(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
-	{
-		if(mockStage > 9)
-			mockStage = 0;
-		
-		mockStage++;
-		
-		return mockStage;
-		//return pregnancy.getPregnancyStage(lmpDate);
-	}
-
-	
-	
 	
 	
 	@RequestMapping(value = "/week/{lmpDate}", method = RequestMethod.GET)
@@ -126,6 +110,13 @@ public class PregnancyController
 
 	}
 	
+	@RequestMapping(value = "/food/{stage}/recipes", method = RequestMethod.GET)
+	public @ResponseBody
+	List<Recipes> recommendedRecipesPegnancyFood(@PathVariable("stage") int stage)
+	{
+		return pregnancy.recommendedPregnancyFood(stage).getRecipes();
+
+	}
 	
 	
 

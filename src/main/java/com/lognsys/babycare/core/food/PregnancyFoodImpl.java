@@ -1,7 +1,6 @@
 package com.lognsys.babycare.core.food;
 
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 import com.lognsys.babycare.core.food.PregnancyFoodRepository;
 
 public class PregnancyFoodImpl implements PregnancyFood
@@ -13,6 +12,8 @@ public class PregnancyFoodImpl implements PregnancyFood
 	private List<Nutritional> listOfNutritionalFood = null;
 
 	private List<Ayurvedic> listOfAyurvedicFood = null;
+	
+	private List<Recipes> listOfRecipes = null;
 
 	public PregnancyFoodImpl(PregnancyFoodRepository pregFoodRepository)
 	{
@@ -37,6 +38,12 @@ public class PregnancyFoodImpl implements PregnancyFood
 		
 		if(listOfNutritionalFood.isEmpty())
 			listOfNutritionalFood = null;
+		
+		listOfRecipes = pregFoodRepository.findRecipesByStage(stage);
+		
+		if(listOfRecipes.isEmpty())
+			listOfRecipes = null;
+		
 
 	}
 
@@ -52,6 +59,13 @@ public class PregnancyFoodImpl implements PregnancyFood
 	public List<Ayurvedic> getAyurvedicFood()
 	{
 		return this.listOfAyurvedicFood;
+	}
+
+
+	@Override
+	public List<Recipes> getRecipes() {
+		// TODO Auto-generated method stub
+		return this.listOfRecipes;
 	}
 
 }
