@@ -122,7 +122,7 @@ public class Parser
 						recipesVo.setBenefit(getCellValue(cell));
 					
 					if (cell.getColumnIndex() == 4)
-						recipesVo.setType(getCellValue(cell));
+						recipesVo.setTypes(getCellValue(cell));
 					
 				}
 				

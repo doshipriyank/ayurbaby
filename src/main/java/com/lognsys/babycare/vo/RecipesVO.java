@@ -12,7 +12,7 @@ public class RecipesVO {
 
 	private String benefit = "";
 
-	private String type = "";
+	private String types = "";
 
 	private Date last_edit;
 
@@ -48,12 +48,12 @@ public class RecipesVO {
 		this.benefit = benefit;
 	}
 
-	public String getType() {
-		return type;
+	public String getTypes() {
+		return types;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTypes(String types) {
+		this.types = types;
 	}
 
 	public Date getLast_edit() {
