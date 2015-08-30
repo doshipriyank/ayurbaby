@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import com.lognsys.babycare.vo.AyurvedicVO;
 import com.lognsys.babycare.vo.FunfactsVO;
 import com.lognsys.babycare.vo.NutritionalVO;
+import com.lognsys.babycare.vo.RecipesVO;
 
 public class Parser
 {
@@ -18,6 +19,8 @@ public class Parser
 	private static int noOfParsedNutFoodRow = 0;
 	private static int noOfParsedAyurvedFoodRow = 0;
 	private static int noOfParsedFunfactsRow = 0;
+	private static int noOfRecipesRow = 0;
+	
 	
 	/**
 	 * Parse excel sheet nutritional skip first row which contains column name
@@ -73,6 +76,67 @@ public class Parser
 
 		return listOfNutritionalVo;
 
+	}
+	
+	
+	
+	/**
+	 * Parse excel sheet nutritional skip first row which contains column name
+	 * 
+	 * @param nutritionalSheet
+	 * @return list of NutrtionalVO object
+	 */
+	public List<RecipesVO> parseRecipesData(Sheet recipesSheet)
+	{
+		Iterator<Row> rowIterator = recipesSheet.iterator();
+		List<RecipesVO> listOfRecipeVo = new ArrayList<RecipesVO>();
+		
+		while (rowIterator.hasNext())
+		{
+			
+			Row row = rowIterator.next();
+			RecipesVO recipesVo = null;
+			
+			if (row.getRowNum() != 0)
+			{
+				
+				recipesVo = new RecipesVO();
+				
+				Iterator<Cell> cellIterator = row.cellIterator();
+				
+				while (cellIterator.hasNext())
+				{
+					
+					Cell cell = cellIterator.next();
+					
+					if (cell.getColumnIndex() == 0)
+						recipesVo.setMonth(getCellValue(cell));
+					
+					if (cell.getColumnIndex() == 1)
+						recipesVo.setName(getCellValue(cell));
+					
+					if (cell.getColumnIndex() == 2)
+						recipesVo.setRecipe(getCellValue(cell));
+					
+					if (cell.getColumnIndex() == 3)
+						recipesVo.setBenefit(getCellValue(cell));
+					
+					if (cell.getColumnIndex() == 4)
+						recipesVo.setType(getCellValue(cell));
+					
+				}
+				
+			}
+			
+			if (recipesVo != null)
+			{
+				listOfRecipeVo.add(recipesVo);
+				noOfRecipesRow++;
+			}
+		}
+		
+		return listOfRecipeVo;
+		
 	}
 
 	/**
@@ -253,6 +317,9 @@ public class Parser
 		
 		if(noOfParsedNutFoodRow != 0)
 			stats.add("Rows parsed Nutritional Sheet - "+noOfParsedNutFoodRow);
+		
+		if(noOfRecipesRow != 0)
+			stats.add("Rows parsed Recipes Sheet - "+noOfRecipesRow);
 		
 			return stats;
 	}

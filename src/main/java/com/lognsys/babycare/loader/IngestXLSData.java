@@ -36,10 +36,10 @@ import com.lognsys.babycare.vo.AyurvedicVO;
 import com.lognsys.babycare.vo.CompoundsVO;
 import com.lognsys.babycare.vo.FunfactsVO;
 import com.lognsys.babycare.vo.NutritionalVO;
+import com.lognsys.babycare.vo.RecipesVO;
 
 @Component
-public class IngestXLSData implements Ingest
-{
+public class IngestXLSData implements Ingest {
 
 	private static Logger log = Logger.getLogger(IngestXLSData.class);
 
@@ -64,6 +64,8 @@ public class IngestXLSData implements Ingest
 
 	private static int ayurvedicRowCount = 0;
 
+	private static int recipeRowCount = 0;
+
 	private static int nutrtionalFoodRowCount = 0;
 
 	private static Parser parser = new Parser();
@@ -71,8 +73,7 @@ public class IngestXLSData implements Ingest
 	private static String[] organicCompounds = { "zinc", "fats", "carbohydrates", "proteins", "vitamin c", "vitamin d",
 			"vitamin b6", "manganese", "iron", "magnesium", "folic acid", "calcium" };
 
-	public static String[] getOrganicCompunds()
-	{
+	public static String[] getOrganicCompunds() {
 		return organicCompounds;
 	}
 
@@ -82,120 +83,121 @@ public class IngestXLSData implements Ingest
 	 * @param resource
 	 * @param dataSource
 	 */
-	public IngestXLSData(Resource resource, DataSource dataSource, Properties sqlProperty)
-	{
+	public IngestXLSData(Resource resource, DataSource dataSource, Properties sqlProperty) {
 		this.sqlProperty = sqlProperty;
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		this.resource = resource;
 	}
 
 	// print usage
-	public static void usage()
-	{
-		System.out.println("Usage : java IngestXLSdata (nutritional | funfacts | ayurvedic)");
+	public static void usage() {
+		System.out.println("Usage : java IngestXLSdata (nutritional | funfacts | ayurvedic | recipe)");
 
 	}
 
 	/**
-	 * This method parses data from excel sheet, builds object from data parsed from excel sheet loads specific sheet
-	 * passed as global argument
+	 * This method parses data from excel sheet, builds object from data parsed
+	 * from excel sheet loads specific sheet passed as global argument
 	 */
 	@Override
-	public void parseData()
-	{
+	public void parseData() {
 		// get Sheet
 		Sheet sheet = getSheet();
 
 		String sheetname = sheet.getSheetName();
-		
+
 		System.out.println("");
 
-		switch (EXCELSHEETS.valueOf(sheetname))
-		{
+		switch (EXCELSHEETS.valueOf(sheetname)) {
 
-			case nutritional:
-				System.out.println("Parsing Nutrtional Sheet.....");
-				List<NutritionalVO> listOfNutritionalVO = parser.parseNutritionalData(sheet);
-				loadData(listOfNutritionalVO, EXCELSHEETS.nutritional);
-				break;
+		case recipes:
+			System.out.println("Parsing Recipes Sheet.....");
+			List<RecipesVO> listOfRecipesVO = parser.parseRecipesData(sheet);
+			loadData(listOfRecipesVO, EXCELSHEETS.recipes);
+			break;
 
-			case funfacts:
-				System.out.println("Parsing funfacts Sheet......");
-				List<FunfactsVO> listOfFunFactsVO = parser.parseFunFacts(sheet);
-				loadData(listOfFunFactsVO, EXCELSHEETS.funfacts);
-				break;
+		case nutritional:
+			System.out.println("Parsing Nutrtional Sheet.....");
+			List<NutritionalVO> listOfNutritionalVO = parser.parseNutritionalData(sheet);
+			loadData(listOfNutritionalVO, EXCELSHEETS.nutritional);
+			break;
 
-			case ayurvedic:
-				System.out.println("Parsing Ayurvedic Sheet......");
-				List<AyurvedicVO> listOfAyurvedicVO = parser.parseAyurvedData(sheet);
-				loadData(listOfAyurvedicVO, EXCELSHEETS.ayurvedic);
-				break;
+		case funfacts:
+			System.out.println("Parsing funfacts Sheet......");
+			List<FunfactsVO> listOfFunFactsVO = parser.parseFunFacts(sheet);
+			loadData(listOfFunFactsVO, EXCELSHEETS.funfacts);
+			break;
 
-			default:
-				System.err.println("Sheet not found");
-				break;
+		case ayurvedic:
+			System.out.println("Parsing Ayurvedic Sheet......");
+			List<AyurvedicVO> listOfAyurvedicVO = parser.parseAyurvedData(sheet);
+			loadData(listOfAyurvedicVO, EXCELSHEETS.ayurvedic);
+			break;
+
+		default:
+			System.err.println("Sheet not found");
+			break;
 
 		}
 
 	}
 
 	/**
-	 * listofData param passed for loading in database; EXCELSHEET param to load specific excel sheet
+	 * listofData param passed for loading in database; EXCELSHEET param to load
+	 * specific excel sheet
 	 * 
 	 * @param listOfData
-	 * @param EXCELSHEETS sheet
+	 * @param EXCELSHEETS
+	 *            sheet
 	 */
 	@Override
-	public void loadData(List<?> listOfData, EXCELSHEETS sheet)
-	{
-		switch (sheet)
-		{
-			case nutritional:
-				loadNutritionalFood(listOfData);
-				break;
-			case ayurvedic:
-				loadAyurved(listOfData);
-				break;
-			case funfacts:
-				organiCompoundRowCount = loadOrganicCompunds();
-				funFactsRowCount = loadFunfacts(listOfData);
-				break;
-			default:
-				log.error("Sheet not found");
-				break;
+	public void loadData(List<?> listOfData, EXCELSHEETS sheet) {
+		switch (sheet) {
+		case recipes:
+			loadRecipes(listOfData);
+			break;
+		case nutritional:
+			loadNutritionalFood(listOfData);
+			break;
+		case ayurvedic:
+			loadAyurved(listOfData);
+			break;
+		case funfacts:
+			organiCompoundRowCount = loadOrganicCompunds();
+			funFactsRowCount = loadFunfacts(listOfData);
+			break;
+		default:
+			log.error("Sheet not found");
+			break;
 		}
 
 	}
 
 	/**
-	 * List<NutritionalVO> param passed. ingest table ayurbaby_nutritionalfood ingest table
-	 * ayurbaby_stage_nutritionalfood
+	 * List<NutritionalVO> param passed. ingest table ayurbaby_nutritionalfood
+	 * ingest table ayurbaby_stage_nutritionalfood
 	 * 
 	 * @param listOfData
 	 * @return no. of rows loaded
 	 */
-	public void loadNutritionalFood(List<?> listOfData)
-	{
+	public void loadNutritionalFood(List<?> listOfData) {
 
 		int totalRowCount = 0;
-		for (Object obj : listOfData)
-		{
-			try
-			{
+		for (Object obj : listOfData) {
+			try {
 				NutritionalVO nutVo = ((NutritionalVO) obj);
 				// ingest ayurbaby_nutritionalfood
 				BeanPropertySqlParameterSource nutVoBeanParam = new BeanPropertySqlParameterSource(nutVo);
 				KeyHolder nutVoKeyHolder = new GeneratedKeyHolder();
 				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_NUTRITIONALFOOD"), nutVoBeanParam,
 						nutVoKeyHolder);
-				
+
 				totalRowCount = totalRowCount + row;
 
 				// ingest ayurbaby_stages_nutritionalfood
 				int[] monthArr = Util.normalizeMonths(nutVo.getMonth(), ",");
 
-				for (int month : monthArr)
-				{
+				for (int month : monthArr) {
 					MapSqlParameterSource params = new MapSqlParameterSource();
 					params.addValue("stage_id", month);
 					params.addValue("nutritionalfood_id", nutVoKeyHolder.getKey());
@@ -203,14 +205,48 @@ public class IngestXLSData implements Ingest
 
 				}
 
-			}
-			catch (DataAccessException dae)
-			{
+			} catch (DataAccessException dae) {
 				dae.printStackTrace();
 			}
 
 			nutrtionalFoodRowCount = totalRowCount;
-			
+
+		}
+
+	}
+
+	public void loadRecipes(List<?> listOfData) {
+
+		int rowCount = 0;
+		for (Object obj : listOfData) {
+			try {
+				// type casting
+				RecipesVO recipeVo = ((RecipesVO) obj);
+
+				// ingest recipe
+				BeanPropertySqlParameterSource recipeVoBeanParam = new BeanPropertySqlParameterSource(recipeVo);
+				KeyHolder recipeVoKeyHolder = new GeneratedKeyHolder();
+				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_RECIPE"), recipeVoBeanParam,
+						recipeVoKeyHolder);
+
+				rowCount = rowCount + row;
+
+				// ingest ayurbaby_stages_ayurvedicfood
+				int[] monthArr = Util.normalizeMonths(recipeVo.getMonth(), ",");
+
+				for (int month : monthArr) {
+					MapSqlParameterSource params = new MapSqlParameterSource();
+					params.addValue("stage_id", month);
+					params.addValue("recipe_id", recipeVoKeyHolder.getKey());
+					jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_STAGE_RECIPE"), params);
+
+				}
+
+			} catch (DataAccessException dae) {
+				dae.printStackTrace();
+			}
+
+			recipeRowCount = rowCount;
 		}
 
 	}
@@ -221,28 +257,24 @@ public class IngestXLSData implements Ingest
 	 * @param listOfData
 	 * @return no. of rows loaded
 	 */
-	public void loadAyurved(List<?> listOfData)
-	{
+	public void loadAyurved(List<?> listOfData) {
 		int rowCount = 0;
-		for (Object obj : listOfData)
-		{
-			try
-			{
-				//type casting
+		for (Object obj : listOfData) {
+			try {
+				// type casting
 				AyurvedicVO ayurVo = ((AyurvedicVO) obj);
 				// ingest ayurvedic
 				BeanPropertySqlParameterSource ayurVoBeanParam = new BeanPropertySqlParameterSource(ayurVo);
 				KeyHolder ayurVoKeyHolder = new GeneratedKeyHolder();
 				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_AYURVED"), ayurVoBeanParam,
 						ayurVoKeyHolder);
-				
-				 rowCount = rowCount + row;
 
-				//ingest ayurbaby_stages_ayurvedicfood
+				rowCount = rowCount + row;
+
+				// ingest ayurbaby_stages_ayurvedicfood
 				int[] monthArr = Util.normalizeMonths(ayurVo.getMonth(), ",");
 
-				for (int month : monthArr)
-				{
+				for (int month : monthArr) {
 					MapSqlParameterSource params = new MapSqlParameterSource();
 					params.addValue("stage_id", month);
 					params.addValue("ayurved_id", ayurVoKeyHolder.getKey());
@@ -250,10 +282,7 @@ public class IngestXLSData implements Ingest
 
 				}
 
-				
-			}
-			catch (DataAccessException dae)
-			{
+			} catch (DataAccessException dae) {
 				dae.printStackTrace();
 			}
 
@@ -268,18 +297,14 @@ public class IngestXLSData implements Ingest
 	 * @param listOfFunFacts
 	 * @return no. of rows loaded
 	 */
-	public int loadFunfacts(List<?> listOfFunFacts)
-	{
+	public int loadFunfacts(List<?> listOfFunFacts) {
 		int[] rowCount = null;
 
 		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(listOfFunFacts.toArray());
 
-		try
-		{
+		try {
 			rowCount = jdbcTemplate.batchUpdate(this.sqlProperty.getProperty("INSERT_FUNFACTS"), params);
-		}
-		catch (DataAccessException dae)
-		{
+		} catch (DataAccessException dae) {
 			log.error(dae.getMessage());
 		}
 
@@ -290,13 +315,11 @@ public class IngestXLSData implements Ingest
 	/**
 	 * @return no. of rows loaded
 	 */
-	public int loadOrganicCompunds()
-	{
+	public int loadOrganicCompunds() {
 
 		List<CompoundsVO> listOfCompounds = new ArrayList<CompoundsVO>();
 
-		for (String compound : organicCompounds)
-		{
+		for (String compound : organicCompounds) {
 
 			listOfCompounds.add(new CompoundsVO(compound));
 
@@ -306,12 +329,10 @@ public class IngestXLSData implements Ingest
 		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(listOfCompounds.toArray());
 
 		{
-			try
-			{       System.out.println("In - SQL INSERT COMPOUND" );
+			try {
+				System.out.println("In - SQL INSERT COMPOUND");
 				rowCount = jdbcTemplate.batchUpdate(this.sqlProperty.getProperty("INSERT_COMPOUND"), params);
-			}
-			catch (DataAccessException dae)
-			{
+			} catch (DataAccessException dae) {
 				log.error(dae.getMessage());
 				System.out.println(dae.getMessage());
 			}
@@ -320,13 +341,11 @@ public class IngestXLSData implements Ingest
 	}
 
 	@Override
-	public void printReport()
-	{
+	public void printReport() {
 
 		System.out.println("\nParsed Summary:");
 		List<String> parsed = Parser.getStats();
-		for (String stats : parsed)
-		{
+		for (String stats : parsed) {
 			System.out.println(stats);
 		}
 
@@ -335,6 +354,7 @@ public class IngestXLSData implements Ingest
 		System.out.println("Ayurvedic Table rows loaded - " + ayurvedicRowCount);
 		System.out.println("Funfacts Table rows loaded - " + funFactsRowCount);
 		System.out.println("Organic Compound Table rows loaded - " + organiCompoundRowCount);
+		System.out.println("Recipe Table rows loaded - " + recipeRowCount);
 		System.out.println();
 
 	}
@@ -343,38 +363,37 @@ public class IngestXLSData implements Ingest
 	 * run method instantiated
 	 */
 	@Override
-	public int run()
-	{
+	public int run() {
 
 		// check if the resource injected exists.
-		if (!resource.exists())
-		{
+		if (!resource.exists()) {
 			log.error("File not found - " + resource.getDescription());
-			throw new IllegalArgumentException("ERROR: File not found - "+resource.getDescription());
+			throw new IllegalArgumentException("ERROR: File not found - " + resource.getDescription());
 
 		}
 
-		// java 7 try-with-resource will close the inputstream after exiting the block-scope
-		try (InputStream is = resource.getInputStream())
-		{
+		// java 7 try-with-resource will close the inputstream after exiting the
+		// block-scope
+		try (InputStream is = resource.getInputStream()) {
 			// Get the workbook instance for XLS file
 			Workbook workBook = WorkbookFactory.create(is);
 
 			/*
-			 * int noOfSheets = workBook.getNumberOfSheets(); if (noOfSheets != 3) throw new
-			 * IllegalArgumentException("ERROR: AyurBaby ExcelSheet does not meet requirements."); // if no argument
-			 * then load all the sheets if (IngestXLSData.ARG.isEmpty()) { for (int i = 0; i < noOfSheets; i++) { // Get
-			 * sheets from the workbook Sheet sheet = workBook.getSheetAt(i); // Set sheet setSheet(sheet); // call
+			 * int noOfSheets = workBook.getNumberOfSheets(); if (noOfSheets !=
+			 * 3) throw new IllegalArgumentException(
+			 * "ERROR: AyurBaby ExcelSheet does not meet requirements."); // if
+			 * no argument then load all the sheets if
+			 * (IngestXLSData.ARG.isEmpty()) { for (int i = 0; i < noOfSheets;
+			 * i++) { // Get sheets from the workbook Sheet sheet =
+			 * workBook.getSheetAt(i); // Set sheet setSheet(sheet); // call
 			 * parsedata after setting sheet for parsing parseData(); } }
 			 */
 
 			// if argument then load all the sheets
-			if (!IngestXLSData.ARG.isEmpty())
-			{
+			if (!IngestXLSData.ARG.isEmpty()) {
 				Sheet sheet = workBook.getSheet(IngestXLSData.ARG);
 
-				if (sheet == null)
-				{
+				if (sheet == null) {
 
 					throw new IllegalArgumentException("ERROR :  argument not found... Please see the usage");
 
@@ -386,9 +405,7 @@ public class IngestXLSData implements Ingest
 			}
 
 			printReport();
-		}
-		catch (InvalidFormatException | IOException e)
-		{
+		} catch (InvalidFormatException | IOException e) {
 			log.error("Error occured while trying to read the file");
 			e.printStackTrace();
 		}
@@ -399,8 +416,7 @@ public class IngestXLSData implements Ingest
 	/**
 	 * @return Sheet set from workbook
 	 */
-	public Sheet getSheet()
-	{
+	public Sheet getSheet() {
 		return sheet;
 	}
 
@@ -409,21 +425,18 @@ public class IngestXLSData implements Ingest
 	 * 
 	 * @param sheet
 	 */
-	public void setSheet(Sheet sheet)
-	{
+	public void setSheet(Sheet sheet) {
 		this.sheet = sheet;
 	}
 
-	public static void main(String[] args) throws IOException
-	{
+	public static void main(String[] args) throws IOException {
 		Date date = new Date();
 
 		System.out.println("Ayurbaby Ingest program started - " + date.toString());
 		long startMilli = System.currentTimeMillis();
 
 		// checks args.length = 1
-		if (args.length != 1)
-		{
+		if (args.length != 1) {
 			usage();
 			System.err.println("Argument required...");
 			System.exit(EXIT_ERROR);
@@ -433,29 +446,27 @@ public class IngestXLSData implements Ingest
 
 		// validate argument with excelsheet name using enum
 		boolean isArgValid = false;
-		for (EXCELSHEETS sheet : EXCELSHEETS.values())
-		{
-			if (sheet.name().equals(IngestXLSData.ARG))
-			{
+		for (EXCELSHEETS sheet : EXCELSHEETS.values()) {
+			if (sheet.name().equals(IngestXLSData.ARG)) {
 				isArgValid = true;
 			}
 		}
 
-		if (!isArgValid)
-		{
+		if (!isArgValid) {
 			usage();
 			System.err.println("Invalid Excel file....sheet not found");
 			System.exit(EXIT_ERROR);
 		}
 
 		System.setProperty("spring.profiles.active", "dev");
-		
-		// Spring Application context loads
-		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(new String[] {"classpath:loader-context.xml"});
-		//
-		//ctx.getEnvironment().setActiveProfiles("dev");
 
-		//ctx.refresh();
+		// Spring Application context loads
+		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(
+				new String[] { "classpath:loader-context.xml" });
+				//
+				// ctx.getEnvironment().setActiveProfiles("dev");
+
+		// ctx.refresh();
 
 		IngestXLSData ingest = ctx.getBean("xlsResource", IngestXLSData.class);
 
@@ -469,8 +480,8 @@ public class IngestXLSData implements Ingest
 
 		ctx.close();
 		System.out.println();
-		System.out.println("AyurBaby Ingest program ended " + date.toString() + " Elapsed time = " + elapsedTimeSec
-				+ " seconds.");
+		System.out.println(
+				"AyurBaby Ingest program ended " + date.toString() + " Elapsed time = " + elapsedTimeSec + " seconds.");
 
 	}
 }
