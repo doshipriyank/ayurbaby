@@ -1,4 +1,4 @@
- package com.lognsys.babycare.rest.controller;
+package com.lognsys.babycare.rest.controller;
 
 import java.util.List;
 
@@ -30,103 +30,78 @@ import com.lognsys.babycare.core.PregnancyException;
 
 @Controller
 @RequestMapping("/pregnancy")
-public class PregnancyController
-{
+public class PregnancyController {
 
 	private final Logger LOG = Logger.getLogger(getClass());
-	
+
 	int mockStage = 0;
-	
+
 	@Autowired
 	private Pregnancy pregnancy;
 
 	@RequestMapping(value = "/compounds/all", method = RequestMethod.GET)
-	public @ResponseBody
-	List<Compound> getCompounds()
-	{
+	public @ResponseBody List<Compound> getCompounds() {
 		return pregnancy.getCompounds();
 	}
 
 	@RequestMapping(value = "/compounds/{name}", method = RequestMethod.GET)
-	public @ResponseBody
-	Compound getCompoundFacts(@PathVariable("name") String nutrient)
-	{
+	public @ResponseBody Compound getCompoundFacts(@PathVariable("name") String nutrient) {
 		return pregnancy.getNutrientsFacts(nutrient);
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param user
 	 */
-	@RequestMapping(value="/adduser")
+	@RequestMapping(value = "/adduser", method = RequestMethod.POST, consumes="application/json"	)
 	public ResponseEntity<String> addUser(@RequestBody User user) {
-		
-		 pregnancy.saveOrUpdateUser(user);
-		 
-			return new ResponseEntity<>(HttpStatus.OK);
-		
-//		if(isSuccess)
-//			return new ResponseEntity<>(HttpStatus.OK);
-//		else
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+		pregnancy.saveOrUpdateUser(user);
+
+		return new ResponseEntity<>(HttpStatus.OK);
+
 	}
 
 	@RequestMapping(value = "/duedate/{lmpDate}", method = RequestMethod.GET)
-	public @ResponseBody
-	String pregnancyDueDate(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
-	{
+	public @ResponseBody String pregnancyDueDate(@PathVariable("lmpDate") String lmpDate) throws PregnancyException {
 		return pregnancy.calculateDueDate(lmpDate);
 	}
 
 	@RequestMapping(value = "/stage/{lmpDate}", method = RequestMethod.GET)
-	public @ResponseBody
-	int pregnancyStage(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
-	{
+	public @ResponseBody int pregnancyStage(@PathVariable("lmpDate") String lmpDate) throws PregnancyException {
 		return pregnancy.getPregnancyStage(lmpDate);
 	}
-	
-	
+
 	@RequestMapping(value = "/week/{lmpDate}", method = RequestMethod.GET)
-	public @ResponseBody
-	int pregnancyWeek(@PathVariable("lmpDate") String lmpDate) throws PregnancyException
-	{
+	public @ResponseBody int pregnancyWeek(@PathVariable("lmpDate") String lmpDate) throws PregnancyException {
 		return pregnancy.getPregnancyWeek(lmpDate);
 	}
 
 	@RequestMapping(value = "/food/{stage}/nutritional", method = RequestMethod.GET)
-	public @ResponseBody
-	List<Nutritional> recommendedNutritionalPegnancyFood(@PathVariable("stage") int stage)
-	{
+	public @ResponseBody List<Nutritional> recommendedNutritionalPegnancyFood(@PathVariable("stage") int stage) {
 		return pregnancy.recommendedPregnancyFood(stage).getNutritionalFood();
 
 	}
 
 	@RequestMapping(value = "/food/{stage}/ayurvedic", method = RequestMethod.GET)
-	public @ResponseBody
-	List<Ayurvedic> recommendedAyurvedicPegnancyFood(@PathVariable("stage") int stage)
-	{
+	public @ResponseBody List<Ayurvedic> recommendedAyurvedicPegnancyFood(@PathVariable("stage") int stage) {
 		return pregnancy.recommendedPregnancyFood(stage).getAyurvedicFood();
 
 	}
-	
+
 	@RequestMapping(value = "/food/{stage}/recipes", method = RequestMethod.GET)
-	public @ResponseBody
-	List<Recipes> recommendedRecipesPegnancyFood(@PathVariable("stage") int stage)
-	{
+	public @ResponseBody List<Recipes> recommendedRecipesPegnancyFood(@PathVariable("stage") int stage) {
 		return pregnancy.recommendedPregnancyFood(stage).getRecipes();
 
 	}
-	
-	
 
 	/**
 	 * Maps IllegalArgumentExceptions to a 404 Not Found HTTP status code.
 	 */
-	@ResponseStatus(value=org.springframework.http.HttpStatus.NOT_FOUND, reason="result not found")
+	@ResponseStatus(value = org.springframework.http.HttpStatus.NOT_FOUND, reason = "result not found")
 	@ExceptionHandler({ EmptyResultDataAccessException.class, NoResultException.class })
-	public void handleNotFound(Exception ex, HttpServletResponse response)
-	{
+	public void handleNotFound(Exception ex, HttpServletResponse response) {
 		LOG.error("Exception is: ", ex);
 		// return empty 404
 	}
@@ -134,20 +109,18 @@ public class PregnancyController
 	/**
 	 * Maps IllegalArgumentExceptions to a 400 Bad Request HTTP status code.
 	 */
-	@ResponseStatus(value=org.springframework.http.HttpStatus.BAD_REQUEST, reason="Bad data")
+	@ResponseStatus(value = org.springframework.http.HttpStatus.BAD_REQUEST, reason = "Bad data")
 	@ExceptionHandler({ IllegalArgumentException.class, IllegalFieldValueException.class })
-	public void handleBadData(Exception ex, HttpServletResponse response)
-	{
+	public void handleBadData(Exception ex, HttpServletResponse response) {
 		LOG.error("Bad data Exception is: ", ex);
 		// return empty 400
 	}
-	
-	@ResponseStatus(value=org.springframework.http.HttpStatus.NOT_ACCEPTABLE, reason="Invalid input data")
+
+	@ResponseStatus(value = org.springframework.http.HttpStatus.NOT_ACCEPTABLE, reason = "Invalid input data")
 	@ExceptionHandler({ PregnancyException.class })
-	public void handleInvalidData(PregnancyException pex, HttpServletResponse response )
-	{ 
+	public void handleInvalidData(PregnancyException pex, HttpServletResponse response) {
 		LOG.error("Invalid Data Exception is: ", pex);
 		// return empty 406
-	
+
 	}
 }

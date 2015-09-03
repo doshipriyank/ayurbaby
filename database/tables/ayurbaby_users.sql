@@ -31,17 +31,19 @@ CREATE TABLE ayurbaby_users (
 	#birthdate
 	birthdate varchar(16) NOT NULL DEFAULT '',
 	
-	#birthdate
+	#source - provenance from login type
 	provenance varchar(16) NOT NULL DEFAULT '',
 	
-	
-	#duedate
+	#source - duedate
 	duedate varchar(16) NOT NULL DEFAULT '',
 	
 	notification TINYINT(1) NOT NULL DEFAULT 0,
 	
 	stage_id int(1) NOT NULL DEFAULT 0,
-		
+
+	#source - device registration_id 
+	registration varchar(2048) NOT NULL DEFAULT '',
+
 	last_edit timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

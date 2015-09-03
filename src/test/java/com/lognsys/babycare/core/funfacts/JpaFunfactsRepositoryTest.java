@@ -25,7 +25,7 @@ public class JpaFunfactsRepositoryTest
 		
 	}
 
-	@Test
+//	@Test
 	public void testFindFactsByCompound()
 	{
 		Assert.assertNotNull(funfactsRepository.findfactsByCompound("fats"));

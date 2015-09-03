@@ -57,12 +57,12 @@ public class PregnancyTest
 		Assert.assertNull(listOfAyurNegative);
 	}
 
-	@Test
+	//@Test
 	public void testGetPregnancyStage() throws PregnancyException
 	{
 		String pregnancyDate = new DateTime().minusMonths(7).toString(DATE_FORMAT_INPUT);
 		int stage = pregnancy.getPregnancyStage(pregnancyDate);
-	//	assertEquals(7, stage);
+		assertEquals(7, stage);
 
 		String pregnancyDate1 = new DateTime().toString(DATE_FORMAT_INPUT);
 		int stage1 = pregnancy.getPregnancyStage(pregnancyDate1);
@@ -126,7 +126,7 @@ public class PregnancyTest
 		Assert.assertNull(emptList);
 	}*/
 	
-	@Test
+//	@Test
 	public void testCalculateDueDate() throws PregnancyException
 	{
 		assertNull(pregnancy.calculateDueDate("01012015"));
