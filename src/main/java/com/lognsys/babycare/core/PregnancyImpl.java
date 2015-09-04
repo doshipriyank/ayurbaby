@@ -95,8 +95,13 @@ public class PregnancyImpl implements Pregnancy {
 
 
 	@Override
-	public void saveOrUpdateUser(User user) {
-		 this.userRepository.saveOrUpdate(user);
+	public boolean saveOrUpdateUser(User user) {
+		 return this.userRepository.saveOrUpdate(user);
+	}
+	
+	@Override
+	public void registerDevice(User user) {	
+		this.userRepository.updateDeviceRegistration(user);
 	}
 
 }

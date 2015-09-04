@@ -1,6 +1,7 @@
 package com.lognsys.babycare.core.user;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,46 +16,112 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 5161794650595376352L;
 
+	public User() {
+		// no-arg constructor to throw error
+	}
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
 	@Column(name = "auth_id")
-	private String auth_id;
+	private String auth_id = "";
 
 	@Column(name = "firstname")
-	private String firstName;
+	private String firstname = "";
 
 	@Column(name = "lastname")
-	private String lastName;
+	private String lastname = "";
 
 	@Column(name = "lastmenperiod")
-	private String lastMenPeriod;
+	private String lastmenperiod = "";
 
 	@Id
 	@Column(name = "email")
 	private String email;
 
 	@Column(name = "location")
-	private String location;
+	private String location = "";
 
 	@Column(name = "phone")
-	private String phone;
+	private String phone = "";
 
 	@Column(name = "birthdate")
-	private String birthDate;
+	private String birthdate = "";
 
 	@Column(name = "duedate")
-	private String dueDate;
+	private String duedate = "";
 
 	@Column(name = "stage_id")
-	private String stage;
+	private int stage = 1;
 
 	@Column(nullable = false, columnDefinition = "TINYINT", length = 1, name = "notification")
 	private boolean notification;
-	
+
 	@Column(name = "provenance")
-	private String provenance;
+	private String provenance = "";
+
+	@Column(name = "registration")
+	private String registration = "";
+
+	@Column(name = "last_edit")
+	private Date last_edit;
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getLastmenperiod() {
+		return lastmenperiod;
+	}
+
+	public void setLastmenperiod(String lastmenperiod) {
+		this.lastmenperiod = lastmenperiod;
+	}
+
+	public String getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(String birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public String getDuedate() {
+		return duedate;
+	}
+
+	public void setDuedate(String duedate) {
+		this.duedate = duedate;
+	}
+
+	public Date getLast_edit() {
+		return last_edit;
+	}
+
+	public void setLast_edit(Date last_edit) {
+		this.last_edit = last_edit;
+	}
+
+	public String getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(String registration) {
+		this.registration = registration;
+	}
 
 	public String getProvenance() {
 		return provenance;
@@ -64,11 +131,11 @@ public class User implements Serializable {
 		this.provenance = provenance;
 	}
 
-	public String getStage() {
+	public int getStage() {
 		return stage;
 	}
 
-	public void setStage(String stage) {
+	public void setStage(int stage) {
 		this.stage = stage;
 	}
 
@@ -86,30 +153,6 @@ public class User implements Serializable {
 
 	public void setAuth_id(String auth_id) {
 		this.auth_id = auth_id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getLastMenPeriod() {
-		return lastMenPeriod;
-	}
-
-	public void setLastMenPeriod(String lastMenPeriod) {
-		this.lastMenPeriod = lastMenPeriod;
 	}
 
 	public String getEmail() {
@@ -136,36 +179,12 @@ public class User implements Serializable {
 		this.phone = phone;
 	}
 
-	public String getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(String birthDate) {
-		this.birthDate = birthDate;
-	}
-
-	public String getDueDate() {
-		return dueDate;
-	}
-
-	public void setDueDate(String dueDate) {
-		this.dueDate = dueDate;
-	}
-
 	public boolean isNotification() {
 		return notification;
 	}
 
 	public void setNotification(boolean notification) {
 		this.notification = notification;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", auth_id=" + auth_id + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", lastMenPeriod=" + lastMenPeriod + ", email=" + email + ", location=" + location + ", phone="
-				+ phone + ", birthDate=" + birthDate + ", dueDate=" + dueDate + ", stage=" + stage + ", notification="
-				+ notification + "]";
 	}
 
 }

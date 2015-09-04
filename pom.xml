@@ -5,6 +5,9 @@
 	<artifactId>ayurbaby</artifactId>
 	<version>0.1</version>
 	<packaging>war</packaging>
+	<properties>
+		<jackson.databind-version>2.2.3</jackson.databind-version>
+	</properties>
 	<build>
 		<finalName>ayurbaby</finalName>
 		<sourceDirectory>src</sourceDirectory>
@@ -12,7 +15,7 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
-		 		<configuration>
+				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
@@ -73,9 +76,9 @@
 
 		<!-- logging dependency -->
 		<dependency>
-  			<groupId>commons-logging</groupId>
-  			<artifactId>commons-logging</artifactId>
-  			<version>1.1.1</version>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 
 		<!-- Database Connection Pooling -->
@@ -113,6 +116,11 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.databind-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -156,11 +164,8 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-	<!-- 	<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-integration</artifactId>
-			<version>1.1.4.RELEASE</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-integration</artifactId> 
+			<version>1.1.4.RELEASE</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-neo4j</artifactId>

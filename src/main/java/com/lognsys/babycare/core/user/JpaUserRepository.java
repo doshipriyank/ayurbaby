@@ -63,17 +63,17 @@ public class JpaUserRepository implements UserRepository {
 
 	}
 
-	// @Override
-	// public Stage findPregnancyStage(String username)
-	// {
-	// User user = (User)
-	// entityManager.createNativeQuery(properties.getProperty("SELECT_USER_STAGE"),
-	// User.class)
-	// .setParameter(1, username).getSingleResult();
-	//
-	// return user.getStage();
-	// }
-	//
+	/**
+	 * 
+	 */
+	@Transactional
+	public User updateDeviceRegistration(User user) {
+
+		User savedUser = entityManager.find(User.class, user.getEmail());
+		savedUser.setRegistration(user.getRegistration());
+		return entityManager.merge(savedUser);
+
+	}
 
 	@Override
 	public User findUserById(int user_id) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,10 +55,28 @@ public class PregnancyController {
 	 * 
 	 * @param user
 	 */
-	@RequestMapping(value = "/adduser", method = RequestMethod.POST, consumes="application/json"	)
+	@RequestMapping(value = "/adduser", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> addUser(@RequestBody User user) {
 
-		pregnancy.saveOrUpdateUser(user);
+		boolean isSaved = pregnancy.saveOrUpdateUser(user);
+
+		if (!isSaved)
+			throw new IllegalStateException("user not saved");
+
+		LOG.info("User saved or updated - " + user.toString());
+
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
+
+	/**
+	 * 
+	 * @param user
+	 */
+	@RequestMapping(value = "/registerdevice", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> updateRegistration(@RequestBody User user) {
+
+		pregnancy.registerDevice(user);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 
@@ -110,9 +129,11 @@ public class PregnancyController {
 	 * Maps IllegalArgumentExceptions to a 400 Bad Request HTTP status code.
 	 */
 	@ResponseStatus(value = org.springframework.http.HttpStatus.BAD_REQUEST, reason = "Bad data")
-	@ExceptionHandler({ IllegalArgumentException.class, IllegalFieldValueException.class })
-	public void handleBadData(Exception ex, HttpServletResponse response) {
+	@ExceptionHandler({ IllegalArgumentException.class, IllegalFieldValueException.class,
+			HttpMessageNotReadableException.class })
+	public void handleBadData(HttpMessageNotReadableException he, Exception ex, HttpServletResponse response) {
 		LOG.error("Bad data Exception is: ", ex);
+		LOG.error("Bad data Exception is: ", he);
 		// return empty 400
 	}
 
@@ -123,4 +144,5 @@ public class PregnancyController {
 		// return empty 406
 
 	}
+
 }

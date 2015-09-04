@@ -11,7 +11,7 @@ CREATE TABLE ayurbaby_users (
 	id integer AUTO_INCREMENT PRIMARY KEY,
 	
 	#auth_id facebook or google
-	auth_id integer NOT NULL DEFAULT 0,	
+	auth_id varchar(512) NOT NULL DEFAULT 0,	
 	
 	firstname varchar(64) NOT NULL DEFAULT '',
 	
@@ -20,13 +20,13 @@ CREATE TABLE ayurbaby_users (
 	lastmenperiod varchar(64) NOT NULL DEFAULT '',
 	
 	#email can be used as username
-	email varchar(80) UNIQUE NOT NULL,
+	email varchar(128) UNIQUE NOT NULL,
 
 	#location name
 	location varchar(128) NOT NULL DEFAULT '',
 	
 	#phone number
-	phone varchar(32) NOT NULL DEFAULT '',
+	phone varchar(32) NULL DEFAULT '',
 	
 	#birthdate
 	birthdate varchar(16) NOT NULL DEFAULT '',
@@ -42,7 +42,7 @@ CREATE TABLE ayurbaby_users (
 	stage_id int(1) NOT NULL DEFAULT 0,
 
 	#source - device registration_id 
-	registration varchar(2048) NOT NULL DEFAULT '',
+	registration varchar(2048)  NOT NULL DEFAULT '',
 
 	last_edit timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	

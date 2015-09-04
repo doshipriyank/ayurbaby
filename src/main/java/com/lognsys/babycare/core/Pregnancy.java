@@ -62,6 +62,11 @@ public interface Pregnancy
 	/**
 	 * 
 	 */
-	public void saveOrUpdateUser(User user);
+	public boolean saveOrUpdateUser(User user);
+	
+	/**
+	 * 
+	 */
+	public void registerDevice(User user);
 
 }
