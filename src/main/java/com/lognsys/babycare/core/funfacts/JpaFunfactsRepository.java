@@ -2,10 +2,8 @@ package com.lognsys.babycare.core.funfacts;
 
 import java.util.List;
 import java.util.Properties;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 
 import com.lognsys.babycare.core.funfacts.Compound;
@@ -67,10 +65,6 @@ public class JpaFunfactsRepository implements FunfactsRepository
 	@Override
 	public Compound findfactsByCompound(String compound)
 	{
-		//	System.out.println("MAX RESULT - "+  entityManager.createQuery(properties.getProperty("SELECT_COMPOUND_FACTS"), Compound.class)
-		//		.setParameter("compound", compound.trim()).getResultList().size());
-
-		
 		return (Compound) entityManager.createQuery(properties.getProperty("SELECT_COMPOUND_FACTS"), Compound.class)
                                 .setParameter("compound", compound.trim()).getSingleResult();
 

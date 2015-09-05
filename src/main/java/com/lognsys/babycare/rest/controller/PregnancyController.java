@@ -10,6 +10,7 @@ import org.joda.time.IllegalFieldValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
@@ -35,14 +36,14 @@ public class PregnancyController {
 
 	private final Logger LOG = Logger.getLogger(getClass());
 
-	int mockStage = 0;
-
 	@Autowired
 	private Pregnancy pregnancy;
 
-	@RequestMapping(value = "/compounds/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/compounds/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Compound> getCompounds() {
-		return pregnancy.getCompounds();
+		List<Compound> compounds = pregnancy.getCompounds();
+		return compounds;
+
 	}
 
 	@RequestMapping(value = "/compounds/{name}", method = RequestMethod.GET)

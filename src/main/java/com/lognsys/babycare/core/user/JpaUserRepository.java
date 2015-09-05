@@ -66,7 +66,7 @@ public class JpaUserRepository implements UserRepository {
 	/**
 	 * 
 	 */
-	@Transactional
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public User updateDeviceRegistration(User user) {
 
 		User savedUser = entityManager.find(User.class, user.getEmail());
