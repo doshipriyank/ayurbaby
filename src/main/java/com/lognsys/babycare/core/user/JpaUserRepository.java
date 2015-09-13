@@ -44,19 +44,19 @@ public class JpaUserRepository implements UserRepository {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public boolean saveOrUpdate(User user) {
 
-		User savedUser = entityManager.find(User.class, user.getEmail());
+		User savedUser = entityManager.find(User.class, user.getAuth_id());
 
 		String primaryKey;
 
 		if (savedUser == null) {
 			entityManager.persist(user);
 			entityManager.flush();
-			primaryKey = user.getEmail();
+			primaryKey = user.getAuth_id();
 			LOG.info("User value inserted by user - " + primaryKey);
 		} else {
 			user.setId(savedUser.getId());
 			entityManager.merge(user);
-			primaryKey = savedUser.getEmail();
+			primaryKey = savedUser.getAuth_id();
 			LOG.info("User profile updated by user - " + primaryKey);
 		}
 		return (!primaryKey.isEmpty() || primaryKey != null);
