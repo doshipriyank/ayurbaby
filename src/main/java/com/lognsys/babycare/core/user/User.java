@@ -7,8 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "ayurbaby_users")
@@ -23,7 +24,8 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-
+	
+	@Id
 	@Column(name = "auth_id")
 	private String auth_id = "";
 
@@ -36,7 +38,6 @@ public class User implements Serializable {
 	@Column(name = "lastmenperiod")
 	private String lastmenperiod = "";
 
-	@Id
 	@Column(name = "email")
 	private String email;
 
